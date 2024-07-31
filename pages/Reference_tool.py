@@ -253,9 +253,15 @@ else:
                         title = data.get('title', '')
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return modified_referenced_works
+                        return {
+                            "title": title,
+                            "referenced_works": modified_referenced_works
+                        }
                     else:
-                        return []
+                        return {
+                            "title": '',
+                            "referenced_works": []
+                        }
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
