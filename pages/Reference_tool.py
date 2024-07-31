@@ -261,6 +261,8 @@ else:
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
+                if df_exploded['referenced_works'] == None:
+                    st.write('No item found')
 
                 def fetch_authorship_info_and_count(referenced_works):
                     url = referenced_work
