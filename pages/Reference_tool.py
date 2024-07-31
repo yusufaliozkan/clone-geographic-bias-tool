@@ -404,6 +404,7 @@ else:
                     countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['author_id', 'Countries']
                     df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
+                    df_authorships
 
                     ## CSI CALCULATION
                     country_count = df_result['Country Code 3'].nunique()
@@ -415,7 +416,6 @@ else:
                     average_rank = df_authorships['Rank'].mean()
                     country_count = df_result['Country Code 3'].nunique()
                     citation_source_index = average_rank / country_count
-                    df_authorships
                     df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'author_id']].drop_duplicates().reset_index(drop=True)
                     df_final = df_final.rename(columns={
                         'doi': 'DOI',
@@ -449,6 +449,10 @@ else:
                         st.metric(label=f'Number of references found', value=f'{no_work}')
                     with col4:
                         st.metric(label=f'Number of unique author countries', value=f'{no_country}')
+
+
+
+
 
 
 
