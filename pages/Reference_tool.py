@@ -406,6 +406,7 @@ else:
                     countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['author_id', 'Countries']
                     df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
+                    df_authorships
 
                     ## CSI CALCULATION
                     country_count = df_result['Country Code 3'].nunique()
