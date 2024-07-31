@@ -266,7 +266,7 @@ else:
                         return referenced_works_with_titles
                     else:
                         return []
-
+                df_dois
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
                 df_exploded = df_dois.explode('referenced_works')
