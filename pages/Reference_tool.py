@@ -428,9 +428,12 @@ else:
                         'author_id':'OpenAlex_ID'
                     })
 
-                    no_authors = df_final['author_name'].nunique()
+                    df_final
+                    df_authorships
+
+                    no_authors = df_authorships['author_name'].nunique()
                     no_work = df_final['OpenAlex_ID'].nunique()
-                    no_country = df_final['Country Code 3'].nunique()
+                    no_country = df_authorships['Country Code 3'].nunique()
                     
                     st.info(f'{no_work} reference(s) found.')
                     col1, col2, col3, col4 = st.columns(4)
