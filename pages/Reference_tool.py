@@ -660,7 +660,7 @@ else:
                     no_country = df_authorships['Country Code 3'].nunique()
                     no_work = df_authorships['OpenAlex_ID']
 
-                    st.info(f"{no_work} references found for the DOI {df_authorships['doi'].iloc[0]}.")
+                    st.info(f"{no_work} references found for the DOI.")
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
@@ -672,7 +672,7 @@ else:
                     with col2:
                         st.metric(label=f'Number of unique authors', value=f'{no_authors}')
                     with col3:
-                        st.metric(label=f'Number of unique author countries', value=f'{no_country}')
+                        st.metric(label=f'Number of referenced found', value=f'{no_work}')
                     with col4:
                         st.metric(label=f'Number of unique author countries', value=f'{no_country}')
                     
