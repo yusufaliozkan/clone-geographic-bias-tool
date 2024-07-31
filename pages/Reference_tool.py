@@ -220,7 +220,7 @@ else:
             st.toast('You entered over 100 DOIs. It may take some time to retrieve results. Please wait.')
         if len(df_dois) >100:
             st.warning('You entered over 100 DOIs. It may take some time to retrieve results.')
-        st.info(f'You entered {no_dois} unique DOIs')
+        container_info = st.container()
         with st.expander(f'See the DOIs you entered'):
             df_dois
 
@@ -259,6 +259,9 @@ else:
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois[['title_of_original_work', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
+
+                title_of_work = {df_dois['title_of_original_work'].iloc[0]}
+                container_info.info = (f'The title of work is {title_of_work}')
 
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
@@ -544,7 +547,7 @@ else:
                     Country affiliations found on author profile page may not be reliable because author profile pages can contain different author information for similar names.
                     ''')
 
-                    status.update(label=f"Calculation complete! Results found for {df_authorships['title_of_original_work'].iloc[0]}.", state="complete", expanded=True)
+                    status.update(label=f"Calculation complete! Results found for '{df_authorships['title_of_original_work'].iloc[0]}'.", state="complete", expanded=True)
 
 
 
