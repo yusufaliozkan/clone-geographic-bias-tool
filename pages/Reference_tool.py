@@ -263,11 +263,11 @@ else:
                 df_exploded
                 if df_exploded['referenced_works'].isnull().all():
                     st.error('''
-                    No DOIs found! 
+                    No reference found! 
 
-                    Check your DOIs and submit them again. 
+                    Make sure that the DOI is correct.
 
-                    If you are sure that the DOIs are correct, they may not be available in the [OpenAlex](https://openalex.org/) database.
+                    If you are sure that the DOIs are correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
