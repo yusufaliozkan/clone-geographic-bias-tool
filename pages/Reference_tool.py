@@ -243,19 +243,16 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
+
                 def fetch_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
                         referenced_works = data.get('referenced_works', [])
-                        # Extracting titles and modifying URLs
-                        modified_referenced_works = []
-                        for rw in referenced_works:
-                            rw_data = requests.get(f"https://api.openalex.org/works/{rw.split('/')[-1]}").json()
-                            title = rw_data.get('title', 'No title available')
-                            modified_url = rw.replace("https://openalex.org", "https://api.openalex.org")
-                            modified_referenced_works.append({'title': title, 'url': modified_url})
+                        title = data.get('title', '')
+                        # Modify URLs to include 'api.'
+                        modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
                         return modified_referenced_works
                     else:
                         return []
