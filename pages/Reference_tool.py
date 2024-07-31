@@ -157,7 +157,7 @@ df_dois = None
 
 radio = st.radio('Select an option', ['Insert DOIs', 'Upload a file with DOIs'])
 if radio == 'Insert DOIs':
-    st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **500 DOIs permitted**!')
+    st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **1 DOI permitted**!')
     dois = st.text_area(
         'Type or paste in one DOI per line in this box, then press Ctrl+Enter.', 
         help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
@@ -175,7 +175,7 @@ if radio == 'Insert DOIs':
     # Create a DataFrame
     df_dois = pd.DataFrame(doi_list, columns=["doi"])
 else:
-    st.write('Please upload and submit a .csv file of [DOIs](https://www.doi.org/) (commencing “10.") in separate rows. **Maximum 500 DOIs permitted**!')
+    st.write('Please upload and submit a .csv file of [DOIs](https://www.doi.org/) (commencing “10.") in separate rows. **Maximum 1 DOI permitted**!')
     st.warning('The title of the column containing DOIs should be one of the followings: doi, DOI, dois, DOIs, Hyperlinked DOI. Otherwise the tool will not identify DOIs.')
     dois = st.file_uploader("Choose a CSV file", type="csv")
 
@@ -209,7 +209,7 @@ else:
     else:
         st.write("Please upload a CSV file to calculate CSI.")
 
-if df_dois is not None and len(df_dois) > 500:
+if df_dois is not None and len(df_dois) > 1:
     st.error('Please enter 500 or fewer DOIs')
 
 else:
