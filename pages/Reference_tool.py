@@ -347,13 +347,37 @@ else:
                     # Update country codes for rows where country_code is missing
                     df_authorships = df_authorships.apply(update_country_code, axis=1)
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].fillna('No country info')
+                    df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('TW', 'CN')
+                    df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('RE', 'FR')
 
                     df_authorships = pd.merge(df_exploded, df_authorships, on='referenced_works', how='left')
                     df_authorships
 
+                    df_countries = pd.read_csv('world_bank_api_results.csv')
 
+                    ## GNI CALCULATIONS
+                    df = pd.read_csv(
+                        'API_NY.GNP.PCAP.CD_DS2_en_csv_v2_1519779.csv',
+                        skiprows=4,  # Example: skipping the first 4 rows if they are not needed
+                        delimiter=',',  # Adjust delimiter if it's not a comma
+                    )
+                    df = df.drop(columns=['Indicator Name', 'Indicator Code'])
 
+                    # Melt the DataFrame to make it long-form
+                    df_melted = df.melt(id_vars=['Country Name', 'Country Code'], var_name='Year', value_name='GNI')
+                    df_melted = df_melted.rename(columns={'Country Code':'Country Code 3'})
+                    # Drop rows with missing GNI values
+                    df_melted = df_melted.dropna(subset=['GNI'])
 
+                    # Convert 'Year' to integer
+                    df_melted['Year'] = df_melted['Year'].astype(int)
+
+                    # Sort by 'Country Name' and 'Year' to get the latest GNI for each country
+                    df_sorted = df_melted.sort_values(by=['Country Name', 'Year'], ascending=[True, False])
+
+                    # Drop duplicates to keep the most recent GNI for each country
+                    df_most_recent = df_sorted.drop_duplicates(subset=['Country Name'])
+                    df_most_recent
 
                 def fetch_authorship_info_and_count(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
