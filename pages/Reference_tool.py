@@ -542,7 +542,7 @@ else:
                     Country affiliations found on author profile page may not be reliable because author profile pages can contain different author information for similar names.
                     ''')
 
-                    status.update(label=f"Calculation complete! Results found for {no_doi_found} DOIs", state="complete", expanded=True)
+                    status.update(label=f"Calculation complete! Results found for {df_authorships['doi'].iloc[0]} DOIs", state="complete", expanded=True)
 
 
 
