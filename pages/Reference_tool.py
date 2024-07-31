@@ -210,7 +210,7 @@ else:
         st.write("Please upload a CSV file to calculate CSI.")
 
 if df_dois is not None and len(df_dois) > 1:
-    st.error('Please enter 500 or fewer DOIs')
+    st.error('Please enter 1 DOI only!')
 
 else:
     if dois:
