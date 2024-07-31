@@ -410,14 +410,14 @@ else:
                     ## CSI CALCULATION
                     country_count = df_result['Country Code 3'].nunique()
 
-                    df_authorships_mean_rank = df_authorships.groupby('author_id')['Rank'].mean()
+                    df_authorships_mean_rank = df_authorships.groupby('referenced_works')['Rank'].mean()
                     csi = round(df_authorships_mean_rank/country_count, 2)
 
-                    df_authorships = df_authorships.merge(csi.rename('Citation Source Index'), on='author_id', how='left')
+                    df_authorships = df_authorships.merge(csi.rename('Citation Source Index'), on='referenced_works', how='left')
                     average_rank = df_authorships['Rank'].mean()
                     country_count = df_result['Country Code 3'].nunique()
                     citation_source_index = average_rank / country_count
-                    df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'author_id']].drop_duplicates().reset_index(drop=True)
+                    df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'referenced_works']].drop_duplicates().reset_index(drop=True)
                     df_final = df_final.rename(columns={
                         'doi': 'DOI',
                         'title': 'Title',
@@ -425,7 +425,7 @@ else:
                         'Countries': 'Countries with Ranks',
                         'author_count':'Author count',
                         'referenced_work_doi':'Referenced work DOI',
-                        'author_id':'OpenAlex_ID'
+                        'referenced_works':'OpenAlex_ID'
                     })
 
                     df_authorships
