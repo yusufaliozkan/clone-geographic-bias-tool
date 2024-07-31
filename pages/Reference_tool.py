@@ -243,24 +243,19 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-                def fetch_referenced_works(doi):
+
+                def fetch_title_and_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
+                        title = data.get('title', '')
                         referenced_works = data.get('referenced_works', [])
-                        # Modify URLs to include 'api.' and fetch titles
-                        referenced_data = []
-                        for rw in referenced_works:
-                            modified_url = rw.replace("https://openalex.org", "https://api.openalex.org")
-                            rw_response = requests.get(modified_url)
-                            if rw_response.status_code == 200:
-                                rw_data = rw_response.json()
-                                title = rw_data.get('title', '')
-                                referenced_data.append((modified_url, title))
-                        return referenced_data
+                        # Modify URLs to include 'api.'
+                        modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
+                        return title, modified_referenced_works
                     else:
-                        return []
+                        return None, []
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
