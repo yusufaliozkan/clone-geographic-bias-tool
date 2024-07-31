@@ -399,12 +399,12 @@ else:
 
                     df_authorships['author_weighting'] = 1 / df_authorships['author_count']
                     df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
-                    df_authorships['all_authors'] = df_authorships.groupby('author_id')['author_name'].transform(lambda x: ' | '.join(x))
+                    df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x))
                     df_authorships
 
-                    countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
-                    countries_combined.columns = ['author_id', 'Countries']
-                    df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
+                    countries_combined = df_authorships.groupby('referenced_works').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
+                    countries_combined.columns = ['referenced_works', 'Countries']
+                    df_authorships = pd.merge(df_authorships, countries_combined, on='referenced_works', how='left')
                     df_authorships
 
                     ## CSI CALCULATION
