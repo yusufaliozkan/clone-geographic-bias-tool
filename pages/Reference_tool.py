@@ -249,16 +249,16 @@ else:
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
-                        title = data.get('title', '')
+                        title_of_original_work = data.get('title', '')
                         referenced_works = data.get('referenced_works', [])
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return title, modified_referenced_works
+                        return title_of_original_work, modified_referenced_works
                     else:
                         return None, []
 
                 # Add a new column to the DataFrame for referenced works
-                df_dois[['title', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
+                df_dois[['title_of_original_work', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
