@@ -163,7 +163,6 @@ if radio == 'Insert DOIs':
         help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
         placeholder=''' e.g.
         10.1136/bmjgh-2023-013696
-        10.1097/jac.0b013e31822cbdfd
         '''
         )
     # Split the input text into individual DOIs based on newline character
