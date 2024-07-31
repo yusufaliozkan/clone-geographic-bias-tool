@@ -417,17 +417,20 @@ else:
                     average_rank = df_authorships['Rank'].mean()
                     country_count = df_result['Country Code 3'].nunique()
                     citation_source_index = average_rank / country_count
-                    df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi']].drop_duplicates().reset_index(drop=True)
+                    df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'author_id']].drop_duplicates().reset_index(drop=True)
                     df_final = df_final.rename(columns={
                         'doi': 'DOI',
                         'title': 'Title',
                         'all_authors': 'All Authors',
                         'Countries': 'Countries with Ranks',
                         'author_count':'Author count',
-                        'referenced_work_doi':'Referenced work DOI'
+                        'referenced_work_doi':'Referenced work DOI',
+                        'author_id':'OpenAlex_ID'
                     })
-                    df_final
 
+                    no_authors = df_authorships['author_name'].nunique()
+                    no_doi_found = df_final['OpenAlex_ID'].nunique()
+                    no_country = df_authorships['Country Code 3'].nunique()
 
 
 
