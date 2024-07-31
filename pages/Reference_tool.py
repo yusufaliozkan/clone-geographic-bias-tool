@@ -244,24 +244,28 @@ else:
             with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
 
-                def fetch_referenced_works(doi):
+                def fetch_referenced_works_with_titles(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
                         referenced_works = data.get('referenced_works', [])
-                        title = data.get('title', '')
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return {
-                            "title": title,
-                            "referenced_works": modified_referenced_works
-                        }
+                        
+                        referenced_works_with_titles = []
+                        for work_url in modified_referenced_works:
+                            work_response = requests.get(work_url)
+                            if work_response.status_code == 200:
+                                work_data = work_response.json()
+                                work_title = work_data.get('title', 'No title available')
+                                referenced_works_with_titles.append({'url': work_url, 'title': work_title})
+                            else:
+                                referenced_works_with_titles.append({'url': work_url, 'title': 'No title available'})
+                        
+                        return referenced_works_with_titles
                     else:
-                        return {
-                            "title": '',
-                            "referenced_works": []
-                        }
+                        return []
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
