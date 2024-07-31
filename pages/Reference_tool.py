@@ -253,7 +253,7 @@ else:
                         title = data.get('title', '')
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return modified_referenced_works, title
+                        return modified_referenced_works
                     else:
                         return []
 
