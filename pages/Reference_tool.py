@@ -377,7 +377,44 @@ else:
 
                     # Drop duplicates to keep the most recent GNI for each country
                     df_most_recent = df_sorted.drop_duplicates(subset=['Country Name'])
-                    df_most_recent
+
+                    # Select the desired columns
+                    df_result = df_most_recent[['Country Name', 'Country Code 3', 'Year', 'GNI']].reset_index(drop=True)
+                    df_result = pd.merge(df_result, df_countries, on='Country Code 3', how='left')
+                    df_result = df_result[df_result['incomeLevel']!='Aggregates'].reset_index(drop=True)
+                    df_result = df_result.sort_values(by='GNI', ascending=True).reset_index(drop=True)
+                    df_result.index = df_result.index + 1
+                    df_result = df_result.rename_axis('Rank').reset_index()
+                    new_row = pd.DataFrame([{
+                        'Rank': np.nan,
+                        'Country Name': 'No country info',
+                        'Country Code 3': 'No country info',
+                        'Year': 2023,
+                        'GNI': np.nan,  # Use NaN for missing numerical data
+                        'Country Code 2': 'No country info',
+                        'name': 'No country info',
+                        'incomeLevel': 'No country info'
+                    }])
+
+                    df_result = pd.concat([df_result, new_row], ignore_index=True)
+                    df_authorships = pd.merge(df_authorships, df_result, on='Country Code 2', how='left')
+
+                    df_authorships['author_weighting'] = 1 / df_authorships['author_count']
+                    df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
+                    df_authorships['all_authors'] = df_authorships.groupby('author_id')['author_name'].transform(lambda x: ' | '.join(x))
+
+                    countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
+                    countries_combined.columns = ['author_id', 'Countries']
+                    df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
+
+                    df_authorships
+
+
+
+
+
+
+
 
                 def fetch_authorship_info_and_count(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
