@@ -660,7 +660,7 @@ else:
                     no_country = df_authorships['Country Code 3'].nunique()
                     no_work = df_authorships['OpenAlex_ID']
 
-                    st.info(f'{no_work} references found for the DOI {df_authorships['doi'].iloc[0]}.')
+                    st.info(f"{no_work} references found for the DOI {df_authorships['doi'].iloc[0]}.")
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
