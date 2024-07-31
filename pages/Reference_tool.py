@@ -400,6 +400,7 @@ else:
                     df_authorships['author_weighting'] = 1 / df_authorships['author_count']
                     df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
                     df_authorships['all_authors'] = df_authorships.groupby('author_id')['author_name'].transform(lambda x: ' | '.join(x))
+                    df_authorships
 
                     countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['author_id', 'Countries']
