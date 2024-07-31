@@ -262,6 +262,87 @@ else:
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
 
+def fetch_authorship_info_and_count(referenced_works):
+    url = referenced_work
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        title = data.get('title', '')
+        authorship_info = data.get('authorships', [])
+        author_count = len(authorship_info)
+        # Extract DOI from the 'ids' field if present
+        doi = data.get('ids', {}).get('doi', '').replace('https://doi.org/', '')
+        return title, authorship_info, author_count, doi
+    else:
+        return '', [], 0, ''
+
+# Function to fetch author details using author ID
+def fetch_author_details(author_id):
+    response = requests.get(author_id)
+    if response.status_code == 200:
+        data = response.json()
+        return data
+    else:
+        return None
+
+# Fetch authorship information for each referenced work and store it in a new DataFrame
+authorship_data = []
+
+for referenced_work in df_exploded['referenced_works']:
+    title, authorship_info, author_count, doi = fetch_authorship_info_and_count(referenced_work)
+    for author in authorship_info:
+        country_codes = author.get('countries', [])
+        source = 'article page'
+        if not country_codes:
+            country_codes = ['']
+            source = 'found through author page'
+        for country_code in country_codes:
+            author_record = {
+                'referenced_works': referenced_work,
+                'title': title,
+                'author_position': author.get('author_position', ''),
+                'author_name': author.get('author', {}).get('display_name', ''),
+                'author_id': author.get('author', {}).get('id', ''),
+                'Country Code 2': country_code,
+                'source': source,
+                'author_count': author_count,
+                'referenced_work_doi': doi  # Add the DOI information here
+            }
+            authorship_data.append(author_record)
+
+            df_authorships = pd.DataFrame(authorship_data)
+
+            # Clean and process the data
+            df_authorships['Country Code 2'] = df_authorships['Country Code 2'].str.strip()
+            df_authorships['Country Code 2'].replace('', pd.NA, inplace=True)
+
+            # Remove duplicate rows
+            df_authorships = df_authorships.drop_duplicates()
+
+            # Add 'api.' between 'https://' and 'openalex' in the 'author_id' column
+            df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
+
+            # Function to update country_code if missing and mark the source
+            def update_country_code(row):
+                if pd.isna(row['Country Code 2']) and row['author_id']:
+                    author_details = fetch_author_details(row['author_id'])
+                    if author_details:
+                        affiliations = author_details.get('affiliations', [])
+                        if affiliations:
+                            country_code = affiliations[0].get('institution', {}).get('country_code', '')
+                            if country_code:
+                                row['Country Code 2'] = country_code
+                                row['source'] = 'author profile page'
+                return row
+
+            # Update country codes for rows where country_code is missing
+            df_authorships = df_authorships.apply(update_country_code, axis=1)
+            df_authorships['Country Code 2'] = df_authorships['Country Code 2'].fillna('No country info')
+
+            df_authorships = pd.merge(df_exploded, df_authorships, on='referenced_works', how='left')
+            df_authorships
+
+
                 def fetch_authorship_info_and_count(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
