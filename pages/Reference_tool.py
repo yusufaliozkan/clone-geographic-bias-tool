@@ -259,6 +259,7 @@ else:
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
+                df_dois
                 df_exploded = df_dois.explode('referenced_works')
                 if df_exploded['referenced_works'].isnull().all():
                     st.error('''
