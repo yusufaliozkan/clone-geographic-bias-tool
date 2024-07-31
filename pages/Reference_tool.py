@@ -429,11 +429,11 @@ else:
                     })
 
                     no_authors = df_authorships['author_name'].nunique()
-                    no_doi_found = df_final['OpenAlex_ID'].nunique()
+                    no_work = df_final['OpenAlex_ID'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
-
-                    st.info(f'Results found for {no_doi_found} DOIs out of {no_dois}')
-                    col1, col2, col3 = st.columns(3)
+                    
+                    st.info(f'{no_work} reference(s) found.')
+                    col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
                             label=f'Citation Source Index', 
@@ -444,8 +444,9 @@ else:
                     with col2:
                         st.metric(label=f'Number of unique authors', value=f'{no_authors}')
                     with col3:
+                        st.metric(label=f'Number of references found', value=f'{no_work}')
+                    with col4:
                         st.metric(label=f'Number of unique author countries', value=f'{no_country}')
-
 
 
 
@@ -658,10 +659,9 @@ else:
                     no_authors = df_authorships['author_name'].nunique()
                     no_doi_found = df_final['DOI'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
-                    no_work = df_authorships['OpenAlex_ID']
 
-                    st.info(f"{no_work} references found for the DOI.")
-                    col1, col2, col3, col4 = st.columns(4)
+                    st.info(f'Results found for {no_doi_found} DOIs out of {no_dois}')
+                    col1, col2, col3 = st.columns(3)
                     with col1:
                         st.metric(
                             label=f'Citation Source Index', 
@@ -672,8 +672,6 @@ else:
                     with col2:
                         st.metric(label=f'Number of unique authors', value=f'{no_authors}')
                     with col3:
-                        st.metric(label=f'Number of referenced found', value=f'{no_work}')
-                    with col4:
                         st.metric(label=f'Number of unique author countries', value=f'{no_country}')
                     
                     @st.experimental_fragment
