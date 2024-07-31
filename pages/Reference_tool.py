@@ -243,30 +243,25 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-
-                def fetch_referenced_works_with_titles(doi):
+                def fetch_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
                         referenced_works = data.get('referenced_works', [])
-                        # Modify URLs to include 'api.'
-                        modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        
-                        referenced_works_with_titles = []
-                        for work_url in modified_referenced_works:
-                            work_response = requests.get(work_url)
-                            if work_response.status_code == 200:
-                                work_data = work_response.json()
-                                work_title = work_data.get('title', 'No title available')
-                                referenced_works_with_titles.append({'url': work_url, 'title': work_title})
-                            else:
-                                referenced_works_with_titles.append({'url': work_url, 'title': 'No title available'})
-                        
-                        return referenced_works_with_titles
+                        # Modify URLs to include 'api.' and fetch titles
+                        referenced_data = []
+                        for rw in referenced_works:
+                            modified_url = rw.replace("https://openalex.org", "https://api.openalex.org")
+                            rw_response = requests.get(modified_url)
+                            if rw_response.status_code == 200:
+                                rw_data = rw_response.json()
+                                title = rw_data.get('title', '')
+                                referenced_data.append((modified_url, title))
+                        return referenced_data
                     else:
                         return []
-                df_dois
+
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
                 df_exploded = df_dois.explode('referenced_works')
