@@ -407,7 +407,12 @@ else:
                     countries_combined.columns = ['author_id', 'Countries']
                     df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
 
-                    df_authorships
+                    ## CSI CALCULATION
+                    country_count = df_result['Country Code 3'].nunique()
+
+                    df_authorships_mean_rank = df_authorships.groupby('author_id')['Rank'].mean()
+                    csi = round(df_authorships_mean_rank/country_count, 2)
+                    csi
 
 
 
