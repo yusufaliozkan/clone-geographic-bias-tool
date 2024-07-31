@@ -428,8 +428,8 @@ else:
                         'author_id':'OpenAlex_ID'
                     })
 
-                    df_final
                     df_authorships
+                    df_final
 
                     no_authors = df_authorships['author_name'].nunique()
                     no_work = df_final['OpenAlex_ID'].nunique()
