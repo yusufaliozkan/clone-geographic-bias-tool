@@ -402,7 +402,6 @@ else:
                     df_authorships['all_authors'] = df_authorships.groupby('author_id')['author_name'].transform(lambda x: ' | '.join(x))
                     df_authorships
 
-                    df_authorships
                     countries_combined = df_authorships.groupby('author_id').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['author_id', 'Countries']
                     df_authorships = pd.merge(df_authorships, countries_combined, on='author_id', how='left')
