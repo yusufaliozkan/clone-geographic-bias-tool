@@ -260,7 +260,6 @@ else:
                 # Add a new column to the DataFrame for referenced works
                 df_dois['referenced_works'] = df_dois['doi'].apply(fetch_referenced_works)
                 df_exploded = df_dois.explode('referenced_works')
-                df_exploded
                 if df_exploded['referenced_works'].isnull().all():
                     st.error('''
                     No reference found! 
@@ -351,7 +350,6 @@ else:
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('RE', 'FR')
 
                     df_authorships = pd.merge(df_exploded, df_authorships, on='referenced_works', how='left')
-                    df_authorships
 
                     df_countries = pd.read_csv('world_bank_api_results.csv')
 
