@@ -202,9 +202,8 @@ else:
 
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
-                if df_exploded['referenced_works_count'].iloc[0] == 0 and not pd.isnull(df_exploded['referenced_works'].iloc[0]):
-                    st.write('sth')
-                elif df_exploded['referenced_works'].isnull().all():
+
+                if df_exploded['referenced_works'].isnull().all():
                     st.error(f'''
                     No reference found for **{df_dois['doi'].iloc[0]}**! 
 
@@ -213,6 +212,8 @@ else:
                     If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
+                elif df_exploded['referenced_works_count'].iloc[0] == 0:
+                    st.write('sth')
                 else:
 
                     title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
