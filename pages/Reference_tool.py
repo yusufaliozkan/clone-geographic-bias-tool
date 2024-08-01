@@ -223,11 +223,6 @@ else:
                 # Add a new column to the DataFrame for referenced works
                 df_dois[['title_of_original_work', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
-                title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
-                hyperlinked_doi = 'https://doi.org/'+ (df_dois['doi'].iloc[0] if not df_dois.empty else "No DOI found")
-                with container_info:
-                    st.info(f'The title of work is **[{title_of_work}]({hyperlinked_doi})**')
-
                 df_exploded = df_dois.explode('referenced_works')
                 if df_exploded['referenced_works'].isnull().all():
                     st.error('''
@@ -239,6 +234,12 @@ else:
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
+
+                    title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
+                    hyperlinked_doi = 'https://doi.org/'+ (df_dois['doi'].iloc[0] if not df_dois.empty else "No DOI found")
+                    with container_info:
+                        st.info(f'The title of work is **[{title_of_work}]({hyperlinked_doi})**')
+
                     def fetch_authorship_info_and_count(referenced_works):
                         url = referenced_work
                         response = requests.get(url)
