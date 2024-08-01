@@ -405,12 +405,10 @@ else:
                     df_authorships['author_weighting'] = 1 / df_authorships['author_count']
                     df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
                     df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x))
-                    df_authorships
 
                     countries_combined = df_authorships.groupby('referenced_works').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['referenced_works', 'Countries']
                     df_authorships = pd.merge(df_authorships, countries_combined, on='referenced_works', how='left')
-                    df_authorships
 
                     ## CSI CALCULATION
                     country_count = df_result['Country Code 3'].nunique()
@@ -437,7 +435,7 @@ else:
                     no_work = df_final['OpenAlex_ID'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
                     
-                    st.info(f'{no_work} reference(s) found.')
+                    st.info(f'{no_work} reference(s) found for **{title_of_work}**.')
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
