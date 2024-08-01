@@ -202,7 +202,7 @@ else:
 
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
-                if df_exploded['referenced_works_count'].iloc[0]==0 and not df_exploded['referenced_works'].isnull().all():
+                if df_exploded['referenced_works_count'].iloc[0] == 0 and not pd.isnull(df_exploded['referenced_works'].iloc[0]):
                     st.write('sth')
                 elif df_exploded['referenced_works'].isnull().all():
                     st.error(f'''
