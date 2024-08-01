@@ -63,7 +63,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.page_link(
     'tools/Affiliation_finder.py', 
-    label=f'<span class="underline">Publication affiliation finder</span>', 
+    label='<span class="underline">Publication affiliation finder</span>', 
     icon="🔗", 
     help='This tool helps you identify the country affiliations of authors for multiple publications.'
     )
