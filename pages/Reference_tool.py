@@ -226,7 +226,7 @@ else:
                 df_exploded = df_dois.explode('referenced_works')
                 if df_exploded['referenced_works'].isnull().all():
                     st.error(f'''
-                    No reference found for {df_dois['doi'].iloc[0]}! 
+                    No reference found for **{df_dois['doi'].iloc[0]}**! 
 
                     Make sure that the DOI is correct.
 
