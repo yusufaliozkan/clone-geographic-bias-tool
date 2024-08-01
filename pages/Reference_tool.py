@@ -230,7 +230,7 @@ else:
 
                     Make sure that the DOI is correct.
 
-                    If you are sure that the DOIs are correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
+                    If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
