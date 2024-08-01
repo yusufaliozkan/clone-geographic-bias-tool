@@ -17,11 +17,11 @@ import time
 #                     initial_sidebar_state="auto") 
 # pd.set_option('display.max_colwidth', None)
 
-home_page = st.Page('Home.py', title='Affiliation finder')
+# home_page = st.Page('Home.py', title='Affiliation finder')
 reference_finder = st.Page('Reference_finder.py', title='Reference finder')
 reference_finder2 = st.Page('Reference_finder copy.py', title='Reference finder2')
 
-pg = st.navigation([home_page, reference_finder, reference_finder2])
+pg = st.navigation([reference_finder, reference_finder2])
 
 pg.run()
 
