@@ -157,7 +157,7 @@ df_dois = None
 
 st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **1 DOI permitted**!')
 dois = st.text_input(
-    'Type or paste in one DOI per line in this box, then press Ctrl+Enter.', 
+    'Type or paste in one DOI per line in this box, then press Enter.', 
     help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
     placeholder=''' e.g.
     10.1136/bmjgh-2023-013696
@@ -506,7 +506,7 @@ else:
                     Country affiliations found on author profile page may not be reliable because author profile pages can contain different author information for similar names.
                     ''')
 
-                    status.update(label=f"Calculation complete! Results found for '{df_authorships['title_of_original_work'].iloc[0]}'.", state="complete", expanded=True)
+                    status.update(label=f"Calculation complete! Results found for '{df_authorships['doi'].iloc[0]}'.", state="complete", expanded=True)
 
 
 
