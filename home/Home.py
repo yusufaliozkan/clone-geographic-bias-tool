@@ -41,19 +41,18 @@ st.title('Geographic Bias Tool', anchor=False)
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 st.subheader('Welcome!', anchor=False)
-with st.expander('See more'):
-    st.write('''
-        Welcome to the Geographic Bias Tool!
+st.write('''
+    Welcome to the Geographic Bias Tool!
 
-        Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors for the selected publications.
+    Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors for the selected publications.
 
-        The following tools are available on this platform: 
+    The following tools are available on this platform: 
 
-        1. **Publication affiliation finder**: This tool helps you identify the country affiliations of authors for multiple publications. 
-        You can enter multiple DOIs to discover the affiliations.
-        2. **Reference affiliation finder**: This tool allows you to identify the country affiliations of authors in the references of a selected work by entering a single DOI.
+    1. **Publication affiliation finder**: This tool helps you identify the country affiliations of authors for multiple publications. 
+    You can enter multiple DOIs to discover the affiliations.
+    2. **Reference affiliation finder**: This tool allows you to identify the country affiliations of authors in the references of a selected work by entering a single DOI.
 
-    ''')
+''')
 st.subheader('Navigate to the tools:', anchor=False)
 
 if st.button(
