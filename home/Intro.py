@@ -45,7 +45,7 @@ st.write('''
     Welcome to the Geographic Bias Tool! 
 ''')
 
-st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon="1️⃣")
+st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon=":link:")
 st.page_link('tools/Reference_finder.py', label='Reference affiliation finder', icon="2️⃣")
 
 st.divider()
