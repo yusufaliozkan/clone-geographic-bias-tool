@@ -204,7 +204,7 @@ else:
                 df_exploded
                 if df_exploded['referenced_works_count'].iloc[0]==0 and not df_exploded['referenced_works'].isnull().all():
                     st.write('sth')
-                if df_exploded['referenced_works'].isnull().all():
+                elif df_exploded['referenced_works'].isnull().all():
                     st.error(f'''
                     No reference found for **{df_dois['doi'].iloc[0]}**! 
 
