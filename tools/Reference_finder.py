@@ -213,7 +213,10 @@ else:
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 elif df_exploded['referenced_works_count'].iloc[0] == 0:
-                    st.write('sth')
+                    st.error(f'''
+                    No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! 
+                    ''')
+                    status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
 
                     title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
