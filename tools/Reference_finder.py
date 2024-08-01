@@ -201,12 +201,12 @@ else:
                 df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
                 df_dois
                 df_exploded = df_dois.explode('referenced_works')
-                if df_dois['referenced_works_count'].iloc[0]==0:
-                    st.error(f'''
-                    No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! 
+                # if df_dois['referenced_works_count'].iloc[0]==0:
+                #     st.error(f'''
+                #     No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! 
 
-                    ''')
-                    status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
+                #     ''')
+                #     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
 
                 elif df_exploded['referenced_works'].isnull().all():
                     st.error(f'''
