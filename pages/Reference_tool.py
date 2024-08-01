@@ -157,7 +157,7 @@ df_dois = None
 
 st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **1 DOI permitted**!')
 dois = st.text_input(
-    'Type or paste in one DOI, then press Enter.', 
+    'Type or paste a DOI, then press Enter.', 
     help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
     placeholder=''' e.g.
     10.1136/bmjgh-2023-013696
