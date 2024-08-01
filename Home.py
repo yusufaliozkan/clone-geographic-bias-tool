@@ -11,6 +11,11 @@ import numpy as np
 import plotly.express as px
 import time
 
+home_page = st.Page('Home.py', title='Affiliation finder')
+reference_finder = st.Page('Reference_finder.py', title='Reference finder')
+reference_finder2 = st.Page('Reference_finder.py', title='Reference finder2')
+
+pg = st.navigation([home_page, reference_finder, reference_finder2])
 
 st.set_page_config(layout = "wide", 
                     page_title='Geographic Bias Tool',
@@ -18,7 +23,6 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 
-pg = st.navigation([st.Page("Home.py"), st.Page("Reference_finder.py"), st.Page("Reference_finder copy.py")])
 pg.run()
 
 st.logo(
