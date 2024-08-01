@@ -15,7 +15,7 @@ import time
 
 affiliation_finder = st.Page('tools/Affiliation_finder.py', title='Publication affiliation finder')
 reference_finder = st.Page('tools/Reference_finder.py', title='Reference affiliation finder')
-intro = st.Page('home/Intro.py', title='Home')
+intro = st.Page('home/Home.py', title='Home')
 
 pg = st.navigation(
     {
