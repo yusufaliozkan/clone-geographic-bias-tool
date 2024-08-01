@@ -200,7 +200,7 @@ else:
 
                 # Add a new column to the DataFrame for referenced works
                 df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count', 'openalex_id']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
-                
+                df_dois
                 df_exploded = df_dois.explode('referenced_works')
                 if df_dois['referenced_works_count'].iloc[0]==0:
                     st.error(f'''
