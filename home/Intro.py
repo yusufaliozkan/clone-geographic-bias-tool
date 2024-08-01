@@ -58,7 +58,7 @@ st.subheader('Navigate to the available tools:', anchor=False)
 if st.button("Publication affiliation finder"):
     st.switch_page("tools/Affiliation_finder.py")
 if st.button("Reference affiliation finder"):
-    st.switch_page("tools/Reference_finder.py")
+    st.switch_page("tools/Reference_finder.py",help='This tool allows you to identify the country affiliations of authors in the references of a selected work.')
 
 st.page_link(
     'tools/Affiliation_finder.py', 
