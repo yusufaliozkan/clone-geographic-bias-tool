@@ -49,32 +49,32 @@ with col1:
     with colcolupperside1:
         with st.popover('About this tool', use_container_width=False):
     
-        st.write('''
-        Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors. 
-        You can submit DOIs of publications to see the authors' country affiliations and country income statuses. 
-        The tool aims to identify authors of given DOIs and found their country affiliations. Countries are ranked based on [World Bank GNI per capita, Atlas method](https://data.worldbank.org/indicator/NY.GNP.PCAP.CD). 
-        The Citation Source Index is calculated to show the geographic bias of the given publication set.
-        '''
-        )
-
-        with st.expander('Who developed?'):
             st.write('''
-            Geographic Bias Tool has been developed by [Imperial College London](https://www.imperial.ac.uk/admin-services/library/learning-support/geo-bias/).
+            Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors. 
+            You can submit DOIs of publications to see the authors' country affiliations and country income statuses. 
+            The tool aims to identify authors of given DOIs and found their country affiliations. Countries are ranked based on [World Bank GNI per capita, Atlas method](https://data.worldbank.org/indicator/NY.GNP.PCAP.CD). 
+            The Citation Source Index is calculated to show the geographic bias of the given publication set.
             '''
             )
 
-        with st.expander('What is Citation Source Index (CSI)?'):
-            st.write('''
-            Citation Source Index (CSI) is a weighted average of the World Bank rankings for Gross National Income (GNI) per capita of the countries where the authors in that citation are from. 
+            with st.expander('Who developed?'):
+                st.write('''
+                Geographic Bias Tool has been developed by [Imperial College London](https://www.imperial.ac.uk/admin-services/library/learning-support/geo-bias/).
+                '''
+                )
 
-            The CSI ranges from 0 to 1, so a CSI closer to 1 means the overall development index of the countries represented by the authors that published the article is high or vice versa. 
-            If the authors on an article were all from Afghanistan then the CSI would be 0.01. 
-            If the authors on an article were all from the UK then the CSI would be 0.88. 
-            The CSI for the reading list as a whole is the average of all the CSI scores for the readings provided on that list and that are available for analysis through this platform.
+            with st.expander('What is Citation Source Index (CSI)?'):
+                st.write('''
+                Citation Source Index (CSI) is a weighted average of the World Bank rankings for Gross National Income (GNI) per capita of the countries where the authors in that citation are from. 
 
-            For more information, the following article: https://link.springer.com/article/10.1007/s11192-021-04231-3
-            '''
-            )
+                The CSI ranges from 0 to 1, so a CSI closer to 1 means the overall development index of the countries represented by the authors that published the article is high or vice versa. 
+                If the authors on an article were all from Afghanistan then the CSI would be 0.01. 
+                If the authors on an article were all from the UK then the CSI would be 0.88. 
+                The CSI for the reading list as a whole is the average of all the CSI scores for the readings provided on that list and that are available for analysis through this platform.
+
+                For more information, the following article: https://link.springer.com/article/10.1007/s11192-021-04231-3
+                '''
+                )
 
         with st.expander('Where the data comes from?'):
             st.write('''
