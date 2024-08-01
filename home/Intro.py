@@ -42,7 +42,14 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', uns
 
 st.subheader('Welcome!')
 st.write('''
-    Welcome to the Geographic Bias Tool! 
+    Welcome to the Geographic Bias Tool!
+
+    Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors for the selected publications.
+
+    The following tools are available on this platform: 
+
+    1. Publication affiliation finder:
+    2. Reference affiliation finder:
 ''')
 
 st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon="🔗")
