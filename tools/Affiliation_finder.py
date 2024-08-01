@@ -45,8 +45,8 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', uns
 
 col1, col2 = st.columns([3,2])
 with col1:
-    col1, col2 = st.columns(2)
-    with col1:
+    colupperside1, colcolupperside2 = st.columns(2)
+    with colcolupperside1:
         with st.popover('About this tool', use_container_width=False):
     
         st.write('''
@@ -128,7 +128,7 @@ with col1:
             Skopec, Mark, et al. ‘Decolonization in a higher education STEMM institution – is “epistemic fragility” a barrier?’ *London Review of Education*, vol. 19, no. 1, June 2021. journals.uclpress.co.uk, https://doi.org/10.14324/LRE.19.1.18.
 
             ''')
-    with col2:
+    with colcolupperside2:
         if st.button(
             "Home", 
             help='This tool allows you to identify the country affiliations of authors in the references of a selected work.'
