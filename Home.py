@@ -18,7 +18,7 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 
-pg = st.navigation([st.Page("Reference_finder.py"), st.Page("Reference_finder copy.py")])
+pg = st.navigation([st.Page("Home.py"), st.Page("Reference_finder.py"), st.Page("Reference_finder copy.py")])
 pg.run()
 
 st.logo(
