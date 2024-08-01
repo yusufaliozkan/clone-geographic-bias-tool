@@ -40,6 +40,10 @@ st.title('Geographic Bias Tool', anchor=False)
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
+st.subheader('Welcome!')
+st.write('''
+    Welcome to the Geographic Bias Tool! 
+''')
 
 st.divider()
 
