@@ -188,18 +188,18 @@ else:
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
-                        id = data.get('id', '')
+                        openalex_id = data.get('id', '')
                         title_of_original_work = data.get('title', '')
                         referenced_works = data.get('referenced_works', [])
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
                         referenced_works_count = data.get('referenced_works_count', 0)
-                        return id, title_of_original_work, modified_referenced_works, referenced_works_count
+                        return openalex_id, title_of_original_work, modified_referenced_works, referenced_works_count
                     else:
                         return None, None, [], 0
 
                 # Add new columns to the DataFrame for id, title, referenced works, and referenced works count
-                df_dois[['id', 'title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
+                df_dois[['openalex_id', 'title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
                 df_exploded = df_dois.explode('referenced_works')
                 df_exploded
