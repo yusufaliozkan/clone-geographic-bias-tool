@@ -33,7 +33,6 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.header("Geographic Bias Tool",anchor=False)
-    st.subheader('Reference Finder')
     with st.expander('Licence'):  
         display_custom_license()
     with st.expander('Source code'):
@@ -65,6 +64,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.title('Geographic Bias Tool', anchor=False)
+st.subheader('Reference Finder')
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
