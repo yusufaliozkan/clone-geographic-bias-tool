@@ -128,7 +128,7 @@ with col1:
     with col2:
         if st.button(
             "Home", 
-            help='This tool allows you to identify the country affiliations of authors in the references of a selected work.'
+            help='Go to Home page'
             ):
             st.switch_page("home/Home.py")
 st.divider()
