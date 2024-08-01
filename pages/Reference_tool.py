@@ -32,7 +32,8 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
-    st.header("Geographic Bias Tool",anchor=False)  
+    st.header("Geographic Bias Tool",anchor=False)
+    st.subheader('Reference Finder')
     with st.expander('Licence'):  
         display_custom_license()
     with st.expander('Source code'):
