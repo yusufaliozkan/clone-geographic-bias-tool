@@ -148,6 +148,7 @@ doi_list = [doi.strip() for doi in doi_list if doi.strip()]
 
 # Create a DataFrame
 df_dois = pd.DataFrame(doi_list, columns=["doi"])
+df_dois
 
 
 if df_dois is not None and len(df_dois) > 1:
@@ -183,7 +184,6 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding references and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-                st.write(f'{doi}')
 
                 def fetch_title_and_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
