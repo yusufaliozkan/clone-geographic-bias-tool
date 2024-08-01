@@ -148,8 +148,6 @@ doi_list = [doi.strip() for doi in doi_list if doi.strip()]
 
 # Create a DataFrame
 df_dois = pd.DataFrame(doi_list, columns=["doi"])
-df_dois
-
 
 if df_dois is not None and len(df_dois) > 1:
     st.error('Please enter 1 DOI only!')
