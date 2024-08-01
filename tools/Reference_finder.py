@@ -32,7 +32,7 @@ st.markdown(
 st.title('Geographic Bias Tool', anchor=False)
 st.header('Reference affiliation finder', anchor=False)
 st.write('''
-This tool allows you to identify the authors country affiliations of a selected work's references.
+This tool allows you to identify the author-country affiliations of a selected work's references.
 Insert a DOI to find out author country affiliation in the references.
 '''
 )
