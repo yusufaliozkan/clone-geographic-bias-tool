@@ -502,4 +502,6 @@ else:
 
     else:
         st.warning("Enter a DOI to calculate the Citation Source Index.")
+st.divider()
+
 display_custom_license()
