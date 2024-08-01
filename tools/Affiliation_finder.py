@@ -40,6 +40,10 @@ st.markdown(
 st.title('Geographic Bias Tool', anchor=False)
 
 st.header('Publication affiliation finder')
+st.write('''
+This tool helps you identify the country affiliations of authors for multiple publications. 
+Get your DOIs ready and find the affiliations and the Citation Source Index.
+''')
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
