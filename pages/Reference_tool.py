@@ -241,7 +241,7 @@ else:
 
             if submit:
                 st.session_state['status_expanded'] = True
-            with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
+            with st.status("Finding references and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
 
                 def fetch_title_and_referenced_works(doi):
@@ -265,7 +265,6 @@ else:
                     st.info(f'The title of work is **{title_of_work}**')
 
                 df_exploded = df_dois.explode('referenced_works')
-                df_exploded
                 if df_exploded['referenced_works'].isnull().all():
                     st.error('''
                     No reference found! 
@@ -433,9 +432,6 @@ else:
                         'referenced_work_doi':'Referenced work DOI',
                         'referenced_works':'OpenAlex_ID'
                     })
-
-                    df_authorships
-                    df_final
 
                     no_authors = df_authorships['author_name'].nunique()
                     no_work = df_final['OpenAlex_ID'].nunique()
