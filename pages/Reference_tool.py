@@ -157,7 +157,7 @@ df_dois = None
 
 st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **1 DOI permitted**!')
 dois = st.text_input(
-    'Type or paste in one DOI per line in this box, then press Enter.', 
+    'Type or paste in one DOI, then press Enter.', 
     help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
     placeholder=''' e.g.
     10.1136/bmjgh-2023-013696
@@ -489,7 +489,6 @@ else:
                     display_table()
                     source =   df_authorships['source'].value_counts().reset_index()
                     result_text = ", ".join([f"**{row['count']}** country affiliations found on **{row['source']}**" for index, row in source.iterrows()])
-                    df_authorships
                     if not exclude_author_profile_page:
                         st.write(f'''**Note:** {result_text}. 
                     Country affiliations found on author profile page may not be reliable because author profile pages can contain different author information for similar names.
@@ -498,5 +497,5 @@ else:
                     status.update(label=f"Calculation complete! Results found for '{df_authorships['doi'].iloc[0]}'.", state="complete", expanded=True)
 
     else:
-        st.warning("Enter DOIs in the text area or upload a file to calculate the Citation Source Index.")
+        st.warning("Enter a DOI to calculate the Citation Source Index.")
 display_custom_license()
