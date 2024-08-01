@@ -53,7 +53,7 @@ st.write('''
     2. **Reference affiliation finder**: This tool allows you to identify the country affiliations of authors in the references of a selected work by entering a single DOI.
 
 ''')
-st.subheader('Available tools:', anchor=False)
+st.subheader('Navigate to the available tools:', anchor=False)
 st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon="🔗")
 st.page_link('tools/Reference_finder.py', label='Reference affiliation finder', icon="🔗")
 
