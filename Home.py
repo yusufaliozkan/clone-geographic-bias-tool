@@ -562,4 +562,7 @@ else:
                     status.update(label=f"Calculation complete! Results found for {no_doi_found} DOIs", state="complete", expanded=True)
     else:
         st.warning("Enter DOIs in the text area or upload a file to calculate the Citation Source Index.")
+
+st.divider()
+
 display_custom_license()
