@@ -221,8 +221,6 @@ else:
         if len(df_dois) >100:
             st.warning('You entered over 100 DOIs. It may take some time to retrieve results.')
         container_info = st.container()
-        with st.expander(f'See the DOIs you entered'):
-            df_dois
 
         col1, col2 = st.columns(2)
         with col1:
@@ -261,8 +259,9 @@ else:
                 df_dois[['title_of_original_work', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
                 title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
+                hyperlinked_doi = df_dois['doi'].iloc[0] if not df_dois.empty else "No DOI found"
                 with container_info:
-                    st.info(f'The title of work is **{title_of_work}**')
+                    st.info(f'The title of work is **{title_of_work}** {hyperlinked_doi}')
 
                 df_exploded = df_dois.explode('referenced_works')
                 if df_exploded['referenced_works'].isnull().all():
@@ -435,7 +434,7 @@ else:
                     no_work = df_final['OpenAlex_ID'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
                     
-                    st.info(f'{no_work} reference(s) found for **{title_of_work}**.')
+                    st.info(f'**{no_work}** reference(s) found for **{title_of_work}**.')
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
