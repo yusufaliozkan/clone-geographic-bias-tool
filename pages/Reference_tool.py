@@ -486,6 +486,7 @@ else:
                             df_final
                     display_table()
                     source =   df_authorships['source'].value_counts().reset_index()
+                    df_authorships
                     result_text = ", ".join([f"**{row['count']}** country affiliations found on **{row['source']}**" for index, row in source.iterrows()])
                     if not exclude_author_profile_page:
                         st.write(f'''**Note:** {result_text}. 
