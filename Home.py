@@ -12,8 +12,8 @@ import plotly.express as px
 import time
 
 # home_page = st.Page('Home.py', title='Affiliation finder')
-affiliation_finder = st.Page('Affiliation_finder.py', title='Affiliation finder')
-reference_finder = st.Page('Reference_finder.py', title='Reference finder')
+affiliation_finder = st.Page('tools/Affiliation_finder.py', title='Affiliation finder')
+reference_finder = st.Page('tools/Reference_finder.py', title='Reference finder')
 
 pg = st.navigation([affiliation_finder, reference_finder])
 
