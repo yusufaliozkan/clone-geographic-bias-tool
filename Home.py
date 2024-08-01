@@ -18,7 +18,7 @@ intro = st.Page('home/Intro.py', title='Introduction')
 
 pg = st.navigation(
     {
-        'Home':[intro]
+        'Home':[intro],
         'Tools':[affiliation_finder, reference_finder]
     }
 )
