@@ -215,7 +215,7 @@ else:
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 elif df_exploded['referenced_works_count'].iloc[0] == 0:
                     st.error(f'''
-                    No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! 
+                    No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! Check the record [{df_dois['openalex_id'].iloc[0]}]({df_dois['openalex_id'].iloc[0]})
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
