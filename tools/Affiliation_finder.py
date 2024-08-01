@@ -83,33 +83,33 @@ with col1:
                 '''
                 )
             with st.expander('Limitations and caveats'):
-            st.write(f'''
-            * The tool searches author affiliations with DOIs. Items without a DOI will be excluded from the search. 
-            Some output types (such as journal articles) are usually assigned more DOIs than other types. 
-            So, for instance, you may not be able to find author affiliations for books or book chapters.
+                st.write(f'''
+                * The tool searches author affiliations with DOIs. Items without a DOI will be excluded from the search. 
+                Some output types (such as journal articles) are usually assigned more DOIs than other types. 
+                So, for instance, you may not be able to find author affiliations for books or book chapters.
 
-            * This tool identifies affiliations from the [OpenAlex database](https://openalex.org/).
-            OpenAlex may not be able to identify all DOIs or author affiliations for various reasons. 
+                * This tool identifies affiliations from the [OpenAlex database](https://openalex.org/).
+                OpenAlex may not be able to identify all DOIs or author affiliations for various reasons. 
 
-            * Where the affiliation information is not available for an author on the article page, the tool goes to the author's profile page on OpenAlex and checks the affiliation from there.
-            This may not always give the best result as similar names can be listed under the same author profile page. 
-            Check the note section at the bottom after performing your search.
+                * Where the affiliation information is not available for an author on the article page, the tool goes to the author's profile page on OpenAlex and checks the affiliation from there.
+                This may not always give the best result as similar names can be listed under the same author profile page. 
+                Check the note section at the bottom after performing your search.
 
-            * The World Bank's GNI per capita ranking is considered as a robust indicator of country income level. However, there are some caveats on the data. 
-            The classification terms can be arbitraty or outdated.
+                * The World Bank's GNI per capita ranking is considered as a robust indicator of country income level. However, there are some caveats on the data. 
+                The classification terms can be arbitraty or outdated.
 
-            * Citation Source Index (CSI) and this tool should not be used to compare research outputs or the datasets. 
-            Having a low or high CSI does not signify the quality of individual paper or a set of outputs.
-            The tool should be used to understand the nature of sources from the affiliation point of view.
+                * Citation Source Index (CSI) and this tool should not be used to compare research outputs or the datasets. 
+                Having a low or high CSI does not signify the quality of individual paper or a set of outputs.
+                The tool should be used to understand the nature of sources from the affiliation point of view.
 
-            * Bear in mind that this tool does not show authors' country of origin or background but shows the affiliated country where the author wrote the paper.
-            For instance, the author affiliation of the United Kingdom doesn't necessarily mean that the author is originally from the United Kingdom.  
+                * Bear in mind that this tool does not show authors' country of origin or background but shows the affiliated country where the author wrote the paper.
+                For instance, the author affiliation of the United Kingdom doesn't necessarily mean that the author is originally from the United Kingdom.  
 
-            * The country information is sourced from OpenAlex and may be adjusted to align with the country names used by the World Bank to generate the CSI. 
-            As a result, certain country names and disputed territories might be displayed differently or not be displayed in this tool. 
-            The creator of this tool assumes no responsibility for any omissions or inaccuracies.
-            '''
-            )
+                * The country information is sourced from OpenAlex and may be adjusted to align with the country names used by the World Bank to generate the CSI. 
+                As a result, certain country names and disputed territories might be displayed differently or not be displayed in this tool. 
+                The creator of this tool assumes no responsibility for any omissions or inaccuracies.
+                '''
+                )
             with st.expander('Reading list about the project'):
                 st.caption(f'''
                 Harris, Matthew. *Decolonizing Healthcare Innovation: Low-Cost Solutions from Low-Income Countries*. Routledge, 2024, https://www.routledge.com/Decolonizing-Healthcare-Innovation-Low-Cost-Solutions-from-Low-Income-Countries/Harris/p/book/9781032284958.
