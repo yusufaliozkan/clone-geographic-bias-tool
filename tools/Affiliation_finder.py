@@ -45,7 +45,9 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', uns
 
 col1, col2 = st.columns([3,2])
 with col1:
-    with st.popover('About this tool', use_container_width=False):
+    col1, col2 = st.columns(2)
+    with col1:
+        with st.popover('About this tool', use_container_width=False):
     
         st.write('''
         Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors. 
@@ -126,7 +128,12 @@ with col1:
             Skopec, Mark, et al. ‘Decolonization in a higher education STEMM institution – is “epistemic fragility” a barrier?’ *London Review of Education*, vol. 19, no. 1, June 2021. journals.uclpress.co.uk, https://doi.org/10.14324/LRE.19.1.18.
 
             ''')
-
+    with col2:
+        if st.button(
+            "Home", 
+            help='This tool allows you to identify the country affiliations of authors in the references of a selected work.'
+            ):
+            st.switch_page("home/Home.py")
 st.divider()
 
 df_dois = None
