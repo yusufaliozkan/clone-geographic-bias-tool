@@ -202,7 +202,6 @@ else:
                 df_dois[['openalex_id', 'title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
                 df_exploded = df_dois.explode('referenced_works')
-                df_exploded
 
                 if df_exploded['title_of_original_work'].isnull().all():
                     st.error(f'''
