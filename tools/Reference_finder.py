@@ -202,6 +202,7 @@ else:
                 df_dois
 
                 df_exploded = df_dois.explode('referenced_works')
+                df_exploded
                 if df_exploded['referenced_works'].isnull().all() or df_dois['referenced_works_count'].isnull().all():
                     st.error(f'''
                     No reference found for **{df_dois['doi'].iloc[0]}**! 
