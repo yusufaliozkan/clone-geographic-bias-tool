@@ -30,7 +30,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.title('Geographic Bias Tool', anchor=False)
-st.header('Reference Finder', anchor=False)
+st.header('Reference affiliation finder', anchor=False)
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
