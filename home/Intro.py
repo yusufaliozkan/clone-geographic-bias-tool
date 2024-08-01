@@ -48,8 +48,10 @@ st.write('''
 
     The following tools are available on this platform: 
 
-    1. **Publication affiliation finder**:
-    2. **Reference affiliation finder**:
+    1. **Publication affiliation finder**: This tool helps you identify the country affiliations of authors for multiple publications. 
+    You can enter multiple DOIs to discover the affiliations.
+    2. **Reference affiliation finder**: This tool allows you to identify the country affiliations of authors in the references of a selected work by entering a single DOI.
+
 ''')
 st.subheader('Available tools:', anchor=False)
 st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon="🔗")
