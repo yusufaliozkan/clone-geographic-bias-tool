@@ -56,9 +56,9 @@ st.write('''
 st.subheader('Navigate to the available tools:', anchor=False)
 
 if st.button("Publication affiliation finder"):
-    st.switch_page("tools.Affiliation_finder.py")
+    st.switch_page("tools/Affiliation_finder.py")
 if st.button("Reference affiliation finder"):
-    st.switch_page("tools.Reference_finder.py")
+    st.switch_page("tools/Reference_finder.py")
 
 st.page_link(
     'tools/Affiliation_finder.py', 
