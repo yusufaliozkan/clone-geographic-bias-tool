@@ -210,16 +210,16 @@ else:
                     If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
-                else:
-                    if df_exploded['referenced_works'].isnull().all():
-                        st.error(f'''
-                        No reference found for **{df_dois['doi'].iloc[0]}**! 
 
-                        Make sure that the DOI is correct.
+                if df_exploded['referenced_works'].isnull().all():
+                    st.error(f'''
+                    No reference found for **{df_dois['doi'].iloc[0]}**! 
 
-                        If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
-                        ''')
-                        status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
+                    Make sure that the DOI is correct.
+
+                    If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
+                    ''')
+                    status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
 
                     title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
