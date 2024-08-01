@@ -182,7 +182,7 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding references and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-                df_dois
+
                 def fetch_title_and_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
@@ -191,24 +191,25 @@ else:
                         title_of_original_work = data.get('title', '')
                         referenced_works = data.get('referenced_works', [])
                         referenced_works_count = data.get('referenced_works_count',[])
+                        openalex_id = data.get('id', [])
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return title_of_original_work, modified_referenced_works, referenced_works_count
+                        return title_of_original_work, modified_referenced_works, referenced_works_count, openalex_id
                     else:
                         return None, []
 
                 # Add a new column to the DataFrame for referenced works
-                df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
-                df_dois
+                df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count', 'openalex_id']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
+                
                 df_exploded = df_dois.explode('referenced_works')
-                # if df_dois['referenced_works_count'].iloc[0]==0:
-                #     st.error(f'''
-                #     No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database! 
+                if df_dois['referenced_works_count'].iloc[0]==0:
+                    st.error(f'''
+                    No reference found for **{df_dois['doi'].iloc[0]}** in the OpenAlex database [{df_dois['doi'].iloc[0]}]({df_dois['openalex_id'].iloc[0]})! 
 
-                #     ''')
-                #     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
+                    ''')
+                    status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
 
-                if df_exploded['referenced_works'].isnull().all() or df_dois.isnull().all():
+                elif df_exploded['referenced_works'].isnull().all() or df_dois['referenced_works_count'].iloc[0]==0:
                     st.error(f'''
                     No reference found for **{df_dois['doi'].iloc[0]}**! 
 
