@@ -191,14 +191,15 @@ else:
                         title_of_original_work = data.get('title', '')
                         referenced_works = data.get('referenced_works', [])
                         referenced_works_count = data.get('referenced_works_count',[])
+                        openalex_id = data.get('id', [])
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        return title_of_original_work, modified_referenced_works, referenced_works_count
+                        return title_of_original_work, modified_referenced_works, referenced_works_count, openalex_id
                     else:
                         return None, []
 
                 # Add a new column to the DataFrame for referenced works
-                df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
+                df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count', 'openalex_id']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
                 
                 df_exploded = df_dois.explode('referenced_works')
                 if df_dois['referenced_works_count'].iloc[0]==0:
