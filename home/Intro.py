@@ -40,7 +40,7 @@ st.title('Geographic Bias Tool', anchor=False)
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-st.subheader('Welcome!')
+st.subheader('Welcome!', anchor=False)
 st.write('''
     Welcome to the Geographic Bias Tool!
 
@@ -48,10 +48,10 @@ st.write('''
 
     The following tools are available on this platform: 
 
-    1. Publication affiliation finder:
-    2. Reference affiliation finder:
+    1. **Publication affiliation finder**:
+    2. **Reference affiliation finder**:
 ''')
-
+st.subheader('Available tools:', anchor=False)
 st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder', icon="🔗")
 st.page_link('tools/Reference_finder.py', label='Reference affiliation finder', icon="🔗")
 
