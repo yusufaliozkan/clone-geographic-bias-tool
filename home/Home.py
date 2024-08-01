@@ -44,7 +44,7 @@ st.subheader('Welcome!', anchor=False)
 st.write('''
     Welcome to the Geographic Bias Tool!
 
-    Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors for the selected publications.
+    Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors for the selected publications or references of a work.
 
     The following tools are available on this platform: 
 
