@@ -56,7 +56,7 @@ st.write('''
 st.subheader('Navigate to the available tools:', anchor=False)
 st.page_link(
     'tools/Affiliation_finder.py', 
-    label=f'___Publication affiliation finder___', 
+    label=f'***Publication affiliation finder***', 
     icon="🔗", 
     help='This tool helps you identify the country affiliations of authors for multiple publications.'
     )
