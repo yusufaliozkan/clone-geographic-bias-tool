@@ -55,19 +55,16 @@ st.write('''
 ''')
 st.subheader('Navigate to the tools:', anchor=False)
 
-col1, col2 = st.columns(2)
-with col1:
-    if st.button(
-        "Publication affiliation finder",
-        help='This tool helps you identify the country affiliations of authors for multiple publications.'
-        ):
-        st.switch_page("tools/Affiliation_finder.py")
-with col2:
-    if st.button(
-        "Reference affiliation finder", 
-        help='This tool allows you to identify the country affiliations of authors in the references of a selected work.'
-        ):
-        st.switch_page("tools/Reference_finder.py")
+if st.button(
+    "Publication affiliation finder",
+    help='This tool helps you identify the country affiliations of authors for multiple publications.'
+    ):
+    st.switch_page("tools/Affiliation_finder.py")
+if st.button(
+    "Reference affiliation finder", 
+    help='This tool allows you to identify the country affiliations of authors in the references of a selected work.'
+    ):
+    st.switch_page("tools/Reference_finder.py")
 
 st.subheader('More information', anchor=False)
 
