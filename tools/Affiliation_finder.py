@@ -59,8 +59,9 @@ with col1:
             with st.expander('Who developed?'):
                 st.write('''
                 Geographic Bias Tool has been developed by [Imperial College London](https://www.imperial.ac.uk/admin-services/library/learning-support/geo-bias/).
-                '''
-                )
+                It was first developed to understand the geographical diversity of publications in Imperial reading lists. 
+                Another version of the same tool is available on a Power BI dashboard for Imperial staff and students only.                
+                ''')
             with st.expander('What is Citation Source Index (CSI)?'):
                 st.write('''
                 Citation Source Index (CSI) is a weighted average of the World Bank rankings for Gross National Income (GNI) per capita of the countries where the authors in that citation are from. 
