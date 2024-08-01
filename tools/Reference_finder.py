@@ -189,7 +189,7 @@ else:
                     if response.status_code == 200:
                         data = response.json()
                         title_of_original_work = data.get('title', '')
-                        referenced_works = data.get('referenced_works', [])
+                        referenced_works = data.get('referenced_works', '')
                         referenced_works_count = data.get('referenced_works_count',0)
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
