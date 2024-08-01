@@ -10,6 +10,8 @@ from copyright import display_custom_license
 import numpy as np
 import plotly.express as px
 import time
+from sidebar_content import sidebar_content
+
 
 st.set_page_config(layout = "wide", 
                     page_title='Geographic Bias Tool',
@@ -25,7 +27,7 @@ pd.set_option('display.max_colwidth', None)
 
 # pg.run()
 
-
+sidebar_content() 
 
 st.markdown(
     """
