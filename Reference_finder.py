@@ -13,13 +13,10 @@ import time
 
 
 st.set_page_config(layout = "wide", 
-                    page_title='Geographic',
+                    page_title='Geographic Bias Tool',
                     page_icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtoX76TyVQs-o1vEvNuAnYX0zahtSui173gg&s",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
-
-pg = st.navigation([st.Page("Reference_finder.py"), st.Page("Reference_finder copy.py")])
-pg.run()
 
 st.logo(
     image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtoX76TyVQs-o1vEvNuAnYX0zahtSui173gg&s',
@@ -35,7 +32,7 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
-    st.header("Geographic Bias Tool",anchor=False)  
+    st.header("Geographic Bias Tool",anchor=False)
     with st.expander('Licence'):  
         display_custom_license()
     with st.expander('Source code'):
@@ -67,6 +64,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.title('Geographic Bias Tool', anchor=False)
+st.header('Reference Finder', anchor=False)
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -75,9 +73,10 @@ with col1:
     with st.popover('About this tool', use_container_width=False):
     
         st.write('''
-        Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors. 
-        You can submit DOIs of publications to see the authors' country affiliations and country income statuses. 
-        The tool aims to identify authors of given DOIs and found their country affiliations. Countries are ranked based on [World Bank GNI per capita, Atlas method](https://data.worldbank.org/indicator/NY.GNP.PCAP.CD). 
+        Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors.
+        The Reference Finder section finds references of a DOI and country affiliations for the authors of referenced works of that DOI.
+        References are found through [OpenAlex](https://openalex.org/) database. **Please note that OpenAlex may not be able to find all references of the work**.
+        Countries are ranked based on [World Bank GNI per capita, Atlas method](https://data.worldbank.org/indicator/NY.GNP.PCAP.CD). 
         The Citation Source Index is calculated to show the geographic bias of the given publication set.
         '''
         )
@@ -117,7 +116,8 @@ with col1:
             So, for instance, you may not be able to find author affiliations for books or book chapters.
 
             * This tool identifies affiliations from the [OpenAlex database](https://openalex.org/).
-            OpenAlex may not be able to identify all DOIs or author affiliations for various reasons. 
+            OpenAlex may not be able to identify all DOIs or author affiliations for various reasons.
+            Similarly, OpenAlex may not be able to find all references. For example, one article may have 30 references but you may see that OpenAlex finds only 15 of the references.
 
             * Where the affiliation information is not available for an author on the article page, the tool goes to the author's profile page on OpenAlex and checks the affiliation from there.
             This may not always give the best result as similar names can be listed under the same author profile page. 
@@ -158,62 +158,26 @@ st.divider()
 
 df_dois = None
 
-radio = st.radio('Select an option', ['Insert DOIs', 'Upload a file with DOIs'])
-if radio == 'Insert DOIs':
-    st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **500 DOIs permitted**!')
-    dois = st.text_area(
-        'Type or paste in one DOI per line in this box, then press Ctrl+Enter.', 
-        help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
-        placeholder=''' e.g.
-        10.1136/bmjgh-2023-013696
-        10.1097/jac.0b013e31822cbdfd
-        '''
-        )
-    # Split the input text into individual DOIs based on newline character
-    doi_list = dois.split('\n')
-    
-    # Remove any empty strings that may result from extra newlines
-    doi_list = [doi.strip() for doi in doi_list if doi.strip()]
-    
-    # Create a DataFrame
-    df_dois = pd.DataFrame(doi_list, columns=["doi"])
-else:
-    st.write('Please upload and submit a .csv file of [DOIs](https://www.doi.org/) (commencing “10.") in separate rows. **Maximum 500 DOIs permitted**!')
-    st.warning('The title of the column containing DOIs should be one of the followings: doi, DOI, dois, DOIs, Hyperlinked DOI. Otherwise the tool will not identify DOIs.')
-    dois = st.file_uploader("Choose a CSV file", type="csv")
+st.write('Please insert [DOIs](https://www.doi.org/) (commencing "10.") in separarate rows. Maximum **1 DOI permitted**!')
+dois = st.text_input(
+    'Type or paste a DOI, then press Enter.', 
+    help='DOIs will be without a hyperlink such as 10.1136/bmjgh-2023-013696',
+    placeholder=''' e.g.
+    10.1136/bmjgh-2023-013696
+    '''
+    )
+# Split the input text into individual DOIs based on newline character
+doi_list = dois.split('\n')
 
-    if dois is not None:
-        # Read the uploaded CSV file into a DataFrame
-        df = pd.read_csv(dois)
-        
-        # List of possible DOI column names
-        doi_columns = ['doi', 'DOI', 'dois', 'DOIs', 'Hyperlinked DOI']
-        
-        # Find the first matching DOI column
-        doi_column = None
-        for col in doi_columns:
-            if col in df.columns:
-                doi_column = col
-                break
-        
-        if doi_column:
-            # Create a DataFrame with DOIs only
-            df_dois = df[[doi_column]]
-            df_dois.columns = ['doi']  # Standardize column name to 'DOI'
-        
-        else:
-            st.error('''
-            No DOI column in the file.
-            
-            Make sure that the column listing DOIs have one of the following alternative names:
-            'doi', 'DOI', 'dois', 'DOIs', 'Hyperlinked DOI'
-            ''')
-            st.stop()
-    else:
-        st.write("Please upload a CSV file to calculate CSI.")
+# Remove any empty strings that may result from extra newlines
+doi_list = [doi.strip() for doi in doi_list if doi.strip()]
 
-if df_dois is not None and len(df_dois) > 500:
-    st.error('Please enter 500 or fewer DOIs')
+# Create a DataFrame
+df_dois = pd.DataFrame(doi_list, columns=["doi"])
+
+
+if df_dois is not None and len(df_dois) > 1:
+    st.error('Please enter 1 DOI only!')
 
 else:
     if dois:
@@ -224,9 +188,7 @@ else:
             st.toast('You entered over 100 DOIs. It may take some time to retrieve results. Please wait.')
         if len(df_dois) >100:
             st.warning('You entered over 100 DOIs. It may take some time to retrieve results.')
-        st.info(f'You entered {no_dois} unique DOIs')
-        with st.expander(f'See the DOIs you entered'):
-            df_dois
+        container_info = st.container()
 
         col1, col2 = st.columns(2)
         with col1:
@@ -245,70 +207,100 @@ else:
 
             if submit:
                 st.session_state['status_expanded'] = True
-            with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
+            with st.status("Finding references and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-                def fetch_authorship_info_and_count(doi):
+
+                def fetch_title_and_referenced_works(doi):
                     url = f"https://api.openalex.org/works/doi:{doi}"
                     response = requests.get(url)
                     if response.status_code == 200:
                         data = response.json()
-                        title = data.get('title', '')
-                        authorship_info = data.get('authorships', [])
-                        author_count = len(authorship_info)
-                        return title, authorship_info, author_count
+                        title_of_original_work = data.get('title', '')
+                        referenced_works = data.get('referenced_works', [])
+                        # Modify URLs to include 'api.'
+                        modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
+                        return title_of_original_work, modified_referenced_works
                     else:
-                        return '', [], 0
-                if not exclude_author_profile_page:
-                    # Function to fetch author details using author ID
-                    def fetch_author_details(author_id):
-                        response = requests.get(author_id)
-                        if response.status_code == 200:
-                            data = response.json()
-                            return data
-                        else:
-                            return None
+                        return None, []
 
-                # Fetch authorship information for each DOI and store it in a new DataFrame
-                authorship_data = []
+                # Add a new column to the DataFrame for referenced works
+                df_dois[['title_of_original_work', 'referenced_works']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
 
-                for doi in df_dois['doi']:
-                    title, authorship_info, author_count = fetch_authorship_info_and_count(doi)
-                    for author in authorship_info:
-                        country_codes = author.get('countries', [])
-                        source = 'article page'
-                        if not country_codes:
-                            country_codes = ['']
-                            source = 'author profile page'
-                        for country_code in country_codes:
-                            author_record = {
-                                'doi': doi,
-                                'title': title,
-                                'author_position': author.get('author_position', ''),
-                                'author_name': author.get('author', {}).get('display_name', ''),
-                                'author_id': author.get('author', {}).get('id', ''),
-                                'Country Code 2': country_code,
-                                'source': source,
-                                'author_count': author_count
-                            }
-                            authorship_data.append(author_record)
+                df_exploded = df_dois.explode('referenced_works')
+                if df_exploded['referenced_works'].isnull().all():
+                    st.error(f'''
+                    No reference found for **{df_dois['doi'].iloc[0]}**! 
 
-                df_authorships = pd.DataFrame(authorship_data)
-                openalex_found_dois = len(df_authorships)
-                if openalex_found_dois == 0:
-                    st.error('''
-                    No DOIs found! 
+                    Make sure that the DOI is correct.
 
-                    Check your DOIs and submit them again. 
-
-                    If you are sure that the DOIs are correct, they may not be available in the [OpenAlex](https://openalex.org/) database.
+                    If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
+
+                    title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
+                    hyperlinked_doi = 'https://doi.org/'+ (df_dois['doi'].iloc[0] if not df_dois.empty else "No DOI found")
+                    with container_info:
+                        st.info(f'The title of work is **[{title_of_work}]({hyperlinked_doi})**')
+
+                    def fetch_authorship_info_and_count(referenced_works):
+                        url = referenced_work
+                        response = requests.get(url)
+                        if response.status_code == 200:
+                            data = response.json()
+                            title = data.get('title', '')
+                            authorship_info = data.get('authorships', [])
+                            author_count = len(authorship_info)
+                            # Extract DOI from the 'ids' field if present
+                            doi = data.get('ids', {}).get('doi', '').replace('https://doi.org/', '')
+                            return title, authorship_info, author_count, doi
+                        else:
+                            return '', [], 0, ''
+
+                    if not exclude_author_profile_page:
+                        # Function to fetch author details using author ID
+                        def fetch_author_details(author_id):
+                            response = requests.get(author_id)
+                            if response.status_code == 200:
+                                data = response.json()
+                                return data
+                            else:
+                                return None
+
+                    # Fetch authorship information for each referenced work and store it in a new DataFrame
+                    authorship_data = []
+
+                    for referenced_work in df_exploded['referenced_works']:
+                        title, authorship_info, author_count, doi = fetch_authorship_info_and_count(referenced_work)
+                        for author in authorship_info:
+                            country_codes = author.get('countries', [])
+                            source = 'article page'
+                            if not country_codes:
+                                country_codes = ['']
+                                source = 'author profile page'
+                            for country_code in country_codes:
+                                author_record = {
+                                    'referenced_works': referenced_work,
+                                    'title': title,
+                                    'author_position': author.get('author_position', ''),
+                                    'author_name': author.get('author', {}).get('display_name', ''),
+                                    'author_id': author.get('author', {}).get('id', ''),
+                                    'Country Code 2': country_code,
+                                    'source': source,
+                                    'author_count': author_count,
+                                    'referenced_work_doi': doi  # Add the DOI information here
+                                }
+                                authorship_data.append(author_record)
+
+                    df_authorships = pd.DataFrame(authorship_data)
+
+                    # Clean and process the data
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].str.strip()
                     df_authorships['Country Code 2'].replace('', pd.NA, inplace=True)
-                    
+
                     # Remove duplicate rows
                     df_authorships = df_authorships.drop_duplicates()
+
                     # Add 'api.' between 'https://' and 'openalex' in the 'author_id' column
                     df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
 
@@ -328,56 +320,12 @@ else:
 
                         # Update country codes for rows where country_code is missing
                         df_authorships = df_authorships.apply(update_country_code, axis=1)
-                                            
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].fillna('No country info')
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('TW', 'CN')
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('RE', 'FR')
 
+                    df_authorships = pd.merge(df_exploded, df_authorships, on='referenced_works', how='left')
 
-                    ## WORLD BANK API
-                    # # Add 'api.' between 'https://' and 'openalex' in the 'author_id' column
-                    # df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
-
-                    # ### THE BELOW IS DUPLICATE
-                    # # Function to update country_code if missing and mark the source
-                    # def update_country_code(row):
-                    #     if not row['Country Code 2'] and row['author_id']:
-                    #         author_details = fetch_author_details(row['author_id'])
-                    #         if author_details:
-                    #             affiliations = author_details.get('affiliations', [])
-                    #             if affiliations:
-                    #                 country_code = affiliations[0].get('institution', {}).get('country_code', '')
-                    #                 if country_code:
-                    #                     row['Country Code 2'] = country_code
-                    #                     row['source'] = 'author profile page'
-                    #     return row
-
-                    # # Update country codes for rows where country_code is missing
-                    # df_authorships = df_authorships.apply(update_country_code, axis=1)
-                    ### DUPLICATE ENDS
-
-                    # world_bank_api_url = "https://api.worldbank.org/v2/country/?per_page=1000"
-                    # response = requests.get(world_bank_api_url)
-                    # root = ET.fromstring(response.content)
-
-                    # # Extract relevant data and store it in a list
-                    # country_data = []
-                    # for country in root.findall(".//{http://www.worldbank.org}country"):
-                    #     country_id = country.get('id')
-                    #     iso2Code = country.find("{http://www.worldbank.org}iso2Code").text
-                    #     name = country.find("{http://www.worldbank.org}name").text
-                    #     income_level = country.find("{http://www.worldbank.org}incomeLevel").text
-                        
-                    #     country_record = {
-                    #         'Country Code 3': country_id,
-                    #         'Country Code 2': iso2Code,
-                    #         'name': name,
-                    #         'incomeLevel': income_level
-                    #     }
-                    #     country_data.append(country_record)
-
-                    # # Create a DataFrame from the list
-                    # df_countries = pd.DataFrame(country_data)
                     df_countries = pd.read_csv('world_bank_api_results.csv')
 
                     ## GNI CALCULATIONS
@@ -424,41 +372,41 @@ else:
                     df_result = pd.concat([df_result, new_row], ignore_index=True)
                     df_authorships = pd.merge(df_authorships, df_result, on='Country Code 2', how='left')
 
-
                     df_authorships['author_weighting'] = 1 / df_authorships['author_count']
-                    df_authorships['author_weighting_score'] = df_authorships['Rank']*df_authorships['author_weighting']
-                    df_authorships['all_authors'] = df_authorships.groupby('doi')['author_name'].transform(lambda x: ' | '.join(x))
-                    countries_combined = df_authorships.groupby('doi').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
-                    countries_combined.columns = ['doi', 'Countries']
-                    df_authorships = pd.merge(df_authorships, countries_combined, on='doi', how='left')
-                    # df_authorships['Countries'] = df_authorships.groupby('doi')['Country Name'].transform(lambda x: ' | '.join(x))
+                    df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
+                    df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x))
 
+                    countries_combined = df_authorships.groupby('referenced_works').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
+                    countries_combined.columns = ['referenced_works', 'Countries']
+                    df_authorships = pd.merge(df_authorships, countries_combined, on='referenced_works', how='left')
 
                     ## CSI CALCULATION
                     country_count = df_result['Country Code 3'].nunique()
 
-                    df_authorships_mean_rank = df_authorships.groupby('doi')['Rank'].mean()
+                    df_authorships_mean_rank = df_authorships.groupby('referenced_works')['Rank'].mean()
                     csi = round(df_authorships_mean_rank/country_count, 2)
 
-                    df_authorships = df_authorships.merge(csi.rename('Citation Source Index'), on='doi', how='left')
+                    df_authorships = df_authorships.merge(csi.rename('Citation Source Index'), on='referenced_works', how='left')
                     average_rank = df_authorships['Rank'].mean()
                     country_count = df_result['Country Code 3'].nunique()
                     citation_source_index = average_rank / country_count
-                    df_final = df_authorships[['Citation Source Index', 'doi', 'title', 'Countries', 'all_authors', 'author_count']].drop_duplicates().reset_index(drop=True)
+                    df_final = df_authorships[['Citation Source Index', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'referenced_works', 'doi']].drop_duplicates().reset_index(drop=True)
                     df_final = df_final.rename(columns={
-                        'doi': 'DOI',
-                        'title': 'Title',
+                        'doi': 'Searched Work DOI',
+                        'title': 'Reference Title',
                         'all_authors': 'All Authors',
                         'Countries': 'Countries with Ranks',
-                        'author_count':'Author count'
+                        'author_count':'Author count',
+                        'referenced_work_doi':'Reference DOI',
+                        'referenced_works':'OpenAlex_ID'
                     })
 
                     no_authors = df_authorships['author_name'].nunique()
-                    no_doi_found = df_final['DOI'].nunique()
+                    no_work = df_final['OpenAlex_ID'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
-
-                    st.info(f'Results found for {no_doi_found} DOIs out of {no_dois}')
-                    col1, col2, col3 = st.columns(3)
+                    
+                    st.info(f'**{no_work}** reference(s) found for **{title_of_work}**.')
+                    col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
                             label=f'Citation Source Index', 
@@ -469,8 +417,10 @@ else:
                     with col2:
                         st.metric(label=f'Number of unique authors', value=f'{no_authors}')
                     with col3:
+                        st.metric(label=f'Number of references found', value=f'{no_work}')
+                    with col4:
                         st.metric(label=f'Number of unique author countries', value=f'{no_country}')
-                    
+
                     @st.experimental_fragment
                     def gbi_tool():
                         on = st.toggle('Display dashboard for country breakdown')
@@ -537,22 +487,8 @@ else:
                     def display_table():
                         display = st.checkbox('Display publications')
                         if display:
-                            df_final['Hyperlinked DOI']='https://doi.org/'+df_final['DOI']
+                            df_final['Hyperlinked DOI']='https://doi.org/'+df_final['Reference DOI']
 
-                            # st.data_editor(
-                            #     df_final,
-                            #     column_config={
-                            #         "DOI": st.column_config.LinkColumn(
-                            #             "DOI",
-                            #             help="Click to access the DOI link",
-                            #             display_text="https://doi.org/(.*?)$",
-                            #             disabled=True
-                            #         )
-                            #     },
-                            #     hide_index=True,
-                            #     disabled=True
-                            # )
-                            # column_configuration = {'Hyperlinked':st.column_config.LinkColumn('Hyperlinked', help='Got to publication page')}
                             df_final
                     display_table()
                     source =   df_authorships['source'].value_counts().reset_index()
@@ -562,10 +498,10 @@ else:
                     Country affiliations found on author profile page may not be reliable because author profile pages can contain different author information for similar names.
                     ''')
 
-                    status.update(label=f"Calculation complete! Results found for {no_doi_found} DOIs", state="complete", expanded=True)
-    else:
-        st.warning("Enter DOIs in the text area or upload a file to calculate the Citation Source Index.")
+                    status.update(label=f"Calculation complete! Results found for '{df_authorships['doi'].iloc[0]}'.", state="complete", expanded=True)
 
+    else:
+        st.warning("Enter a DOI to calculate the Citation Source Index.")
 st.divider()
 
 display_custom_license()
