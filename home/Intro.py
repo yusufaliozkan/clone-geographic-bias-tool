@@ -45,7 +45,7 @@ st.write('''
     Welcome to the Geographic Bias Tool! 
 ''')
 
-st.link_button('Publication affiliation finder','tools/Affiliation_finder.py')
+st.link_button('Publication affiliation finder','https://test-gbt.streamlit.app/Affiliation_finder')
 st.page_link('tools/Affiliation_finder.py', label='Publication affiliation finder')
 st.page_link('tools/Reference_finder.py', label='Reference affiliation finder')
 
