@@ -201,17 +201,17 @@ else:
                 df_dois[['title_of_original_work', 'referenced_works', 'referenced_works_count']] = df_dois['doi'].apply(fetch_title_and_referenced_works).apply(pd.Series)
                 
                 df_exploded = df_dois.explode('referenced_works')
-                if df_dois['referenced_works_count'].iloc[0]==0:
-                    st.error(f'''
-                    No reference found for **{df_dois['doi'].iloc[0]}**! 
+                # if df_dois['referenced_works_count'].iloc[0]==0:
+                #     st.error(f'''
+                #     No reference found for **{df_dois['doi'].iloc[0]}**! 
 
-                    Make sure that the DOI is correct.
+                #     Make sure that the DOI is correct.
 
-                    If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
-                    ''')
-                    status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
+                #     If you are sure that the DOI is correct, [OpenAlex](https://openalex.org/) database may not be able to find any reference.
+                #     ''')
+                #     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
 
-                if df_exploded['referenced_works'].isnull().all():
+                if df_exploded['referenced_works'].isnull().all() or df_dois['referenced_works_count'].iloc[0]==0:
                     st.error(f'''
                     No reference found for **{df_dois['doi'].iloc[0]}**! 
 
