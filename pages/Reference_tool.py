@@ -74,7 +74,7 @@ with col1:
     
         st.write('''
         Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors.
-        The Reference Finder section finds references of a DOI and country affiliations for the authors of referenced works.
+        The Reference Finder section finds references of a DOI and country affiliations for the authors of referenced works of that DOI.
         References are found through [OpenAlex](https://openalex.org/) database. **Please note that OpenAlex may not be able to find all references of the work**.
         Countries are ranked based on [World Bank GNI per capita, Atlas method](https://data.worldbank.org/indicator/NY.GNP.PCAP.CD). 
         The Citation Source Index is calculated to show the geographic bias of the given publication set.
@@ -116,7 +116,8 @@ with col1:
             So, for instance, you may not be able to find author affiliations for books or book chapters.
 
             * This tool identifies affiliations from the [OpenAlex database](https://openalex.org/).
-            OpenAlex may not be able to identify all DOIs or author affiliations for various reasons. 
+            OpenAlex may not be able to identify all DOIs or author affiliations for various reasons.
+            Similarly, OpenAlex may not be able to find all references. For example, one article may have 30 references but you may see that OpenAlex finds only 15 of the references.
 
             * Where the affiliation information is not available for an author on the article page, the tool goes to the author's profile page on OpenAlex and checks the affiliation from there.
             This may not always give the best result as similar names can be listed under the same author profile page. 
