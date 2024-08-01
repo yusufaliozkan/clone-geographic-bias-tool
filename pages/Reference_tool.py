@@ -261,7 +261,7 @@ else:
                 title_of_work = df_dois['title_of_original_work'].iloc[0] if not df_dois.empty else "No title found"
                 hyperlinked_doi = 'https://doi.org/'+ (df_dois['doi'].iloc[0] if not df_dois.empty else "No DOI found")
                 with container_info:
-                    st.info(f'The title of work is **{title_of_work}** {hyperlinked_doi}')
+                    st.info(f'The title of work is **[{title_of_work}]({hyperlinked_doi})**')
 
                 df_exploded = df_dois.explode('referenced_works')
                 if df_exploded['referenced_works'].isnull().all():
