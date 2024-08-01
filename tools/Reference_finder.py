@@ -192,7 +192,7 @@ else:
                         referenced_works = data.get('referenced_works', [])
                         # Modify URLs to include 'api.'
                         modified_referenced_works = [rw.replace("https://openalex.org", "https://api.openalex.org") for rw in referenced_works]
-                        referenced_works_count = data.get('referenced_works_count', 0)
+                        referenced_works_count = data.get('referenced_works_count', [])
                         return title_of_original_work, modified_referenced_works, referenced_works_count
                     else:
                         return None, [], 0
