@@ -386,7 +386,7 @@ else:
                     citation_source_index = average_rank / country_count
                     df_final = df_authorships[['Citation Source Index', 'title', 'Countries', 'all_authors', 'author_count', 'referenced_work_doi', 'referenced_works', 'doi']].drop_duplicates().reset_index(drop=True)
                     df_final = df_final.rename(columns={
-                        'doi': 'DOI',
+                        'doi': 'Searched Work DOI',
                         'title': 'Reference Title',
                         'all_authors': 'All Authors',
                         'Countries': 'Countries with Ranks',
