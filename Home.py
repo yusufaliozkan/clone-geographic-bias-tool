@@ -17,13 +17,13 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 
-home_page = st.Page('Home.py', title='Affiliation finder')
-reference_finder = st.Page('Reference_finder.py', title='Reference finder')
-reference_finder2 = st.Page('Reference_finder copy.py', title='Reference finder2')
+# home_page = st.Page('Home.py', title='Affiliation finder')
+# reference_finder = st.Page('Reference_finder.py', title='Reference finder')
+# reference_finder2 = st.Page('Reference_finder copy.py', title='Reference finder2')
 
-pg = st.navigation([home_page, reference_finder, reference_finder2])
+# pg = st.navigation([home_page, reference_finder, reference_finder2])
 
-pg.run()
+# pg.run()
 
 st.logo(
     image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtoX76TyVQs-o1vEvNuAnYX0zahtSui173gg&s',
