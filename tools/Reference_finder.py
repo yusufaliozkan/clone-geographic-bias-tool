@@ -360,7 +360,9 @@ else:
 
                     df_authorships['author_weighting'] = 1 / df_authorships['author_count']
                     df_authorships['author_weighting_score'] = df_authorships['Rank'] * df_authorships['author_weighting']
-                    df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x))
+                    df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x.astype(str)))
+
+                    # df_authorships['all_authors'] = df_authorships.groupby('referenced_works')['author_name'].transform(lambda x: ' | '.join(x))
 
                     countries_combined = df_authorships.groupby('referenced_works').apply(lambda x: ' | '.join(x['Country Name'] + " (" + x['Rank'].astype(str) + ")")).reset_index()
                     countries_combined.columns = ['referenced_works', 'Countries']
