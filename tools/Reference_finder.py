@@ -399,23 +399,13 @@ else:
                         @st.experimental_dialog("Important note")
                         def guide(item):
                             st.write('''
-                                The Intelligence Studies Bibliography supports basic-level searches with Boolean operators.
-
-                                Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" **NOT** British).
-
-                                You can search using double quotes (e.g., "covert action").
-
-                                Multiple Boolean operators are allowed: (e.g. "covert action" **OR** "covert operation" **OR** "covert operations")
-
-                                Please note: Search with parentheses is **not** available.
-
-                                Note that the search function is limited: you will only find exact matches and cannot see search relevance.
-
-                                You can share the link of your search result. Try: https://intelligence.streamlit.app/?search_in=Title&query=cia+OR+mi6
+                                This tool uses [OpenAlex](https://openalex.org/) to find out references and author country affiliation of sources in the references.
+                                Therefore, OpenAlex **may not be able to find all references** for the given work. 
+                                The results should be verified with checking the research article directly if necessary.
                                 ''')
                         if "guide" not in st.session_state:
-                            if st.button("Search guide"):
-                                guide("Search guide")
+                            if st.button("Important note"):
+                                guide("Important note")
                         container_refresh_button = st.container()
                     important_note()
                     col1, col2, col3, col4 = st.columns(4)
