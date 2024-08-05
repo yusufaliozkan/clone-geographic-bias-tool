@@ -411,6 +411,10 @@ else:
 
                             You can share the link of your search result. Try: https://intelligence.streamlit.app/?search_in=Title&query=cia+OR+mi6
                             ''')
+                    if "guide" not in st.session_state:
+                        if st.button("Search guide"):
+                            guide("Search guide")
+                    container_refresh_button = st.container()
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
                         st.metric(
