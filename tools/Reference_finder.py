@@ -399,7 +399,7 @@ else:
                         @st.experimental_dialog("Important note")
                         def guide(item):
                             st.write('''
-                                This tool uses [OpenAlex](https://openalex.org/) to find out references and author country affiliation of sources in the references.
+                                This tool uses the [OpenAlex](https://openalex.org/) database to find out references and author country affiliation of sources in the references.
                                 OpenAlex **may not be able to find all references** for the given work. 
                                 For example, the result of 9 references found may not necessarily mean that the research output has 9 references only.
                                 Therefore, the results should be verified with checking the research article directly if necessary.
