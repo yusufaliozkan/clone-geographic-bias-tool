@@ -396,7 +396,7 @@ else:
                     st.info(f'**{no_work}** reference(s) found for **{title_of_work}**.')
                     @st.experimental_fragment
                     def important_note(): 
-                        @st.dialog("Important note")
+                        @st.experimental_dialog("Important note")
                         def guide(item):
                             st.write('''
                                 This tool uses the [OpenAlex](https://openalex.org/) database to find out references and author country affiliation of sources in the references.
