@@ -482,7 +482,6 @@ else:
                     def gbi_tool():
                         col1, col2 = st.columns([3,2])
                         with col1:
-                            st.write('Dashboard')
                             country_counts = df_authorships['Country Name'].value_counts().reset_index()
                             country_counts.columns = ['Country Name', 'Count']
                             fig = px.bar(country_counts, x='Country Name', y='Count', title='Country Counts')
