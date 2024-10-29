@@ -477,22 +477,6 @@ else:
                                 col2.plotly_chart(fig2, use_container_width = True)
                             col1, col2 = st.columns([3,1])
                             with col1:
-                                country_counts
-                                fig = px.choropleth(
-                                    country_counts,
-                                    locations='Country Name',
-                                    locationmode='country names',
-                                    color='Count',
-                                    hover_name='Country Name',
-                                    color_continuous_scale='Viridis',
-                                    title='Author Affiliations on Map'
-                                )
-                                fig.update_layout(
-                                    width=1200,  # Set the width as per your requirement
-                                    height=700   # Set the height as per your requirement
-                                )
-                                col1.plotly_chart(fig, use_container_width=True)
-
 
                                 # Function to get coordinates
                                 def get_coordinates(country_name):
@@ -540,7 +524,6 @@ else:
                                     map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
                                 )
                                 st.pydeck_chart(chart, use_container_width=True)
-
 
                             with col2:
                                 fig3 = px.box(df_final, y= 'Citation Source Index', title='Box Plot of Citation Source Index')
