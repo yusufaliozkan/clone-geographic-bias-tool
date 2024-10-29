@@ -407,7 +407,7 @@ else:
                                 Therefore, the results should be verified with checking the research article directly if necessary.
                                 ''')
                         if "guide" not in st.session_state:
-                            if st.button("Important note"):
+                            if st.button("Important note", icon=":material/warning:"):
                                 guide("Important note")
                         container_refresh_button = st.container()
                     important_note()
@@ -523,14 +523,14 @@ else:
                             country_counts.columns = ['Country Name', 'Count']
                             country_counts = pd.merge(country_counts, df_result, on='Country Name')
                             country_counts = country_counts.drop(columns=['Unnamed: 0', 'Country Code 3', 'Country Code 2', 'name', 'Year','GNI'])
-                            columns = ['Country Name', 'Rank', 'incomeLevel', 'Count']
+                            columns = ['Country Name', 'incomeLevel', 'Count']
                             country_counts = country_counts[columns]
                             new_column_names = {
                                 'incomeLevel': 'Income Level',
                                 'Count': 'Author Count',
                             }
                             country_counts = country_counts.rename(columns=new_column_names)
-                            country_counts = country_counts.sort_values(by='Rank', ascending=True).reset_index(drop=True)
+                            country_counts = country_counts.sort_values(by='Author Count', ascending=False).reset_index(drop=True)
                             st.dataframe(country_counts, hide_index=True, use_container_width=True, height=500)
                     gbi_tool()
 
