@@ -131,7 +131,8 @@ with col1:
     with col2:
         if st.button(
             "Home", 
-            help='Go to Home page'
+            help='Go to Home page',
+            icon=":material/home:"
             ):
             st.switch_page("home/Home.py")
 st.divider()
@@ -448,7 +449,7 @@ else:
                         if not np.isnan(citation_source_index):
                             fig3 = px.box(df_final, y= 'Citation Source Index', title='Box Plot of Citation Source Index')
                             col2.plotly_chart(fig3, use_container_width = True)  
-                            
+
                     @st.experimental_fragment
                     def gbi_tool():
                         col1, col2 = st.columns([3,2])
