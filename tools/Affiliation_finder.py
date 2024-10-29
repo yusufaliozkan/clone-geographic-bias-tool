@@ -476,6 +476,7 @@ else:
                                 col2.plotly_chart(fig2, use_container_width = True)
                             col1, col2 = st.columns([3,1])
                             with col1:
+                                country_counts
                                 fig = px.choropleth(
                                     country_counts,
                                     locations='Country Name',
