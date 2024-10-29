@@ -512,27 +512,26 @@ else:
                             # Apply the function to each country to get latitude and longitude
                             country_counts[['Latitude', 'Longitude']] = country_counts['Country Name'].apply(lambda x: pd.Series(get_coordinates(x)))
 
-                            # Set a scaling factor to control the height of the bars
-                            scaling_factor = 5000  # Adjust this to control the overall height of the bars
+                            # Set a scaling factor and minimum radius to make circles larger
+                            scaling_factor = 5000  # Adjust this to control the overall size of the circles
+                            minimum_radius = 100000  # Minimum radius for visibility of all points
 
-                            # Calculate the bar height based on `Count`
-                            country_counts['elevation'] = country_counts['Count'] * scaling_factor
+                            # Calculate the circle size based on `Count`
+                            country_counts['size'] = country_counts['Count'] * scaling_factor + minimum_radius
 
                             # Filter out rows where coordinates were not found
                             country_counts = country_counts.dropna(subset=['Latitude', 'Longitude'])
 
-                            # ColumnLayer to show countries and their mentions count as bars
-                            column_layer = pdk.Layer(
-                                "ColumnLayer",
+                            # ScatterplotLayer to show countries and their mentions count
+                            scatterplot_layer = pdk.Layer(
+                                "ScatterplotLayer",
                                 data=country_counts,
                                 get_position=["Longitude", "Latitude"],
-                                get_elevation="elevation",
-                                radius=200000,  # Adjust radius to control bar width
-                                elevation_scale=1,  # Use to further adjust elevation if needed
+                                get_radius="size",
                                 get_fill_color="[255, 140, 0, 160]",  # Adjusted color with opacity
                                 pickable=True,
                                 auto_highlight=True,
-                                id="country-mentions-bars",
+                                id="country-mentions-layer",
                             )
 
                             # Define the view state of the map
@@ -542,13 +541,11 @@ else:
 
                             # Create the Deck with the layer, view state, and map style
                             chart = pdk.Deck(
-                                layers=[column_layer],
+                                layers=[scatterplot_layer],
                                 initial_view_state=view_state,
-                                tooltip={"text": "{Country Name}\nMentions: {Count}"},
+                                tooltip={"text": "{Country Name}\n# Authors: {Count}"},
                                 map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
                             )
-
-                            # Display the chart
                             st.pydeck_chart(chart, use_container_width=False)
                         with col2:
                             country_counts = df_authorships['Country Name'].value_counts().reset_index()
