@@ -543,7 +543,7 @@ else:
                             map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
                         )
                         st.subheader('Author country affiliations', anchor=False)
-                        st.pydeck_chart(chart, use_container_width=True)
+                        st.pydeck_chart(chart, use_container_width=False)
             
                     gbi_tool()
  
