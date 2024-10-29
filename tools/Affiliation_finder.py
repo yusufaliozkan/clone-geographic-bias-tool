@@ -52,7 +52,7 @@ col1, col2 = st.columns([3,2])
 with col1:
     col1, col2 = st.columns(2)
     with col1:
-        with st.popover('About this tool', use_container_width=False):
+        with st.popover('About this tool', use_container_width=False, icon=":material/info:"):
     
             st.write('''
             Geographic Bias Tool aims to present data on the diversity of countries and country income level of authors. 
