@@ -513,7 +513,7 @@ else:
                             country_counts[['Latitude', 'Longitude']] = country_counts['Country Name'].apply(lambda x: pd.Series(get_coordinates(x)))
 
                             # Set a scaling factor to control the height of the bars
-                            scaling_factor = 50000  # Adjust this to control the overall height of the bars
+                            scaling_factor = 5000  # Adjust this to control the overall height of the bars
 
                             # Calculate the bar height based on `Count`
                             country_counts['elevation'] = country_counts['Count'] * scaling_factor
