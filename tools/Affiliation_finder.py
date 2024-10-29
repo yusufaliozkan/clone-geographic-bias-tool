@@ -543,6 +543,7 @@ else:
                             tooltip={"text": "{Country_Name}\nMentions: {Count}"},
                             map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
                         )
+                        st.subheader('Author country affiliations')
                         st.pydeck_chart(chart, use_container_width=True)
             
                     gbi_tool()
