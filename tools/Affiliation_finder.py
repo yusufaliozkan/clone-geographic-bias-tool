@@ -560,7 +560,7 @@ else:
                             }
                             country_counts = country_counts.rename(columns=new_column_names)
                             country_counts = country_counts.sort_values(by='Rank', ascending=True).reset_index(drop=True)
-                            st.dataframe(country_counts, hide_index=True)
+                            st.dataframe(country_counts, hide_index=True, use_container_width=True)
                     gbi_tool()
  
                     @st.experimental_fragment
