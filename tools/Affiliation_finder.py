@@ -548,7 +548,19 @@ else:
                             st.subheader('Author country affiliations', anchor=False)
                             st.pydeck_chart(chart, use_container_width=False)
                         with col2:
-                            country_counts
+                            country_counts = df_authorships['Country Name'].value_counts().reset_index()
+                            country_counts.columns = ['Country Name', 'Count']
+                            country_counts = pd.merge(country_counts, df_result, on='Country Name')
+                            country_counts = country_counts.drop(columns=['Unnamed: 0', 'Country Code 3', 'Country Code 2', 'name', 'Year','GNI'])
+                            columns = ['Country Name', 'Rank', 'incomeLevel', 'Count']
+                            country_counts = country_counts[columns]
+                            new_column_names = {
+                                'incomeLevel': 'Income Level',
+                                'Count': 'Author Count',
+                            }
+                            country_counts = country_counts.rename(columns=new_column_names)
+                            country_counts = country_counts.sort_values(by='Rank', ascending=True).reset_index(drop=True)
+                            st.dataframe(country_counts, hide_index=True)
                     gbi_tool()
  
                     @st.experimental_fragment
