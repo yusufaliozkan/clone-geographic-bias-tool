@@ -559,7 +559,7 @@ else:
                                 'Count': 'Author Count',
                             }
                             country_counts = country_counts.rename(columns=new_column_names)
-                            country_counts = country_counts.sort_values(by='Author Count', ascending=True).reset_index(drop=True)
+                            country_counts = country_counts.sort_values(by='Author Count', ascending=False).reset_index(drop=True)
                             st.dataframe(country_counts, hide_index=True, use_container_width=True, height=500)
                     gbi_tool()
  
