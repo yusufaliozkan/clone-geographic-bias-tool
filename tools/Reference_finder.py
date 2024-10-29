@@ -426,7 +426,7 @@ else:
 
                     @st.experimental_fragment
                     def gbi_tool():
-                         col1, col2 = st.columns([3,2])
+                        col1, col2 = st.columns([3,2])
                         with col1:
                             country_counts = df_authorships['Country Name'].value_counts().reset_index()
                             country_counts.columns = ['Country Name', 'Count']
