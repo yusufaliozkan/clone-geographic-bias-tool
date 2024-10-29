@@ -552,7 +552,7 @@ else:
                             country_counts.columns = ['Country Name', 'Count']
                             country_counts = pd.merge(country_counts, df_result, on='Country Name')
                             country_counts = country_counts.drop(columns=['Unnamed: 0', 'Country Code 3', 'Country Code 2', 'name', 'Year','GNI'])
-                            columns = ['Country Name', 'Rank', 'incomeLevel', 'Count']
+                            columns = ['Country Name', 'incomeLevel', 'Count']
                             country_counts = country_counts[columns]
                             new_column_names = {
                                 'incomeLevel': 'Income Level',
