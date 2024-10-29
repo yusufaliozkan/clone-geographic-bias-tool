@@ -510,7 +510,7 @@ else:
                                 minimum_radius = 100000  # Minimum radius for visibility of all points
 
                                 # Calculate the circle size based on `Count`
-                                country_counts['size'] = country_counts['Publications'] * scaling_factor + minimum_radius
+                                country_counts['size'] = country_counts['Count'] * scaling_factor + minimum_radius
 
                                 # Filter out rows where coordinates were not found
                                 country_counts = country_counts.dropna(subset=['Latitude', 'Longitude'])
