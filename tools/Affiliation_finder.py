@@ -134,7 +134,8 @@ with col1:
     with col2:
         if st.button(
             "Home", 
-            help='Go to Home page'
+            help='Go to Home page',
+            icon=":material/home:"
             ):
             st.switch_page("home/Home.py")
 st.divider()
