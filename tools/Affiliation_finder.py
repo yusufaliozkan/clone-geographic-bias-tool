@@ -540,7 +540,7 @@ else:
                         chart = pdk.Deck(
                             layers=[scatterplot_layer],
                             initial_view_state=view_state,
-                            tooltip={"text": "{Country Name}\nMentions: {Count}"},
+                            tooltip={"text": "{Country Name}\# Authors: {Count}"},
                             map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
                         )
                         st.subheader('Author country affiliations', anchor=False)
