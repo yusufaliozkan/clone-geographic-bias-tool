@@ -277,7 +277,6 @@ else:
                             authorship_data.append(author_record)
 
                 df_authorships = pd.DataFrame(authorship_data)
-                df_authorships
                 openalex_found_dois = len(df_authorships)
                 if openalex_found_dois == 0:
                     st.error('''
