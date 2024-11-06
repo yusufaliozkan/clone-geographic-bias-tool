@@ -288,7 +288,6 @@ else:
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
-                    df_authorships
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].str.strip()
                     df_authorships['Country Code 2'].replace('', pd.NA, inplace=True)
                     
