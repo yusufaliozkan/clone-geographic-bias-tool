@@ -277,7 +277,6 @@ else:
                             authorship_data.append(author_record)
 
                 df_authorships = pd.DataFrame(authorship_data)
-                df_authorships
                 openalex_found_dois = len(df_authorships)
                 if openalex_found_dois == 0:
                     st.error('''
@@ -289,6 +288,7 @@ else:
                     ''')
                     status.update(label=f"Calculation complete without any results!", state="complete", expanded=True)
                 else:
+                    df_authorships
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].str.strip()
                     df_authorships['Country Code 2'].replace('', pd.NA, inplace=True)
                     
