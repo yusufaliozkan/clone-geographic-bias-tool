@@ -13,6 +13,7 @@ import time
 from sidebar_content import sidebar_content
 from countryinfo import CountryInfo
 import pydeck as pdk
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 st.set_page_config(layout = "wide", 
                     page_title='Geographic Bias Tool',
@@ -231,50 +232,129 @@ else:
                 st.session_state['status_expanded'] = True
             with st.status("Finding sources and calculating CSI...", expanded=st.session_state.get('status_expanded', True)) as status:
                 ## OPENALEX DATA RETRIEVAL
-                def fetch_authorship_info_and_count(doi):
+                MAX_WORKERS = 10
+
+                def fetch_authorship_info_and_count(doi, session=None):
                     url = f"https://api.openalex.org/works/doi:{doi}"
-                    response = requests.get(url)
-                    if response.status_code == 200:
-                        data = response.json()
-                        title = data.get('title', '')
-                        authorship_info = data.get('authorships', [])
-                        author_count = len(authorship_info)
-                        return title, authorship_info, author_count
-                    else:
-                        return '', [], 0
-                if not exclude_author_profile_page:
-                    # Function to fetch author details using author ID
-                    def fetch_author_details(author_id):
-                        response = requests.get(author_id)
-                        if response.status_code == 200:
-                            data = response.json()
-                            return data
-                        else:
-                            return None
+
+                    for attempt in range(4):
+                        try:
+                            response = (session or requests).get(url, timeout=15)
+
+                            if response.status_code == 200:
+                                data = response.json()
+                                title = data.get('title', '')
+                                authorship_info = data.get('authorships', [])
+                                author_count = len(authorship_info)
+                                return {
+                                    "doi": doi,
+                                    "title": title,
+                                    "authorship_info": authorship_info,
+                                    "author_count": author_count,
+                                    "error": None
+                                }
+
+                            if response.status_code == 404:
+                                return {
+                                    "doi": doi,
+                                    "title": '',
+                                    "authorship_info": [],
+                                    "author_count": 0,
+                                    "error": "not_found"
+                                }
+
+                            if response.status_code == 429:
+                                time.sleep(2 * (attempt + 1))
+                                continue
+
+                            return {
+                                "doi": doi,
+                                "title": '',
+                                "authorship_info": [],
+                                "author_count": 0,
+                                "error": f"status_{response.status_code}"
+                            }
+
+                        except requests.exceptions.Timeout:
+                            if attempt < 3:
+                                time.sleep(2 * (attempt + 1))
+                                continue
+                            return {
+                                "doi": doi,
+                                "title": '',
+                                "authorship_info": [],
+                                "author_count": 0,
+                                "error": "timeout"
+                            }
+
+                        except requests.RequestException as e:
+                            if attempt < 3:
+                                time.sleep(2 * (attempt + 1))
+                                continue
+                            return {
+                                "doi": doi,
+                                "title": '',
+                                "authorship_info": [],
+                                "author_count": 0,
+                                "error": str(e)
+                            }
+
+                    return {
+                        "doi": doi,
+                        "title": '',
+                        "authorship_info": [],
+                        "author_count": 0,
+                        "error": "unknown_error"
+                    }
 
                 # Fetch authorship information for each DOI and store it in a new DataFrame
                 authorship_data = []
+                failed_dois = []
 
-                for doi in df_dois['doi']:
-                    title, authorship_info, author_count = fetch_authorship_info_and_count(doi)
-                    for author in authorship_info:
-                        country_codes = author.get('countries', [])
-                        source = 'article page'
-                        if not country_codes:
-                            country_codes = ['']
-                            source = 'author profile page'
-                        for country_code in country_codes:
-                            author_record = {
-                                'doi': doi,
-                                'title': title,
-                                'author_position': author.get('author_position', ''),
-                                'author_name': author.get('author', {}).get('display_name', ''),
-                                'author_id': author.get('author', {}).get('id', ''),
-                                'Country Code 2': country_code,
-                                'source': source,
-                                'author_count': author_count
-                            }
-                            authorship_data.append(author_record)
+                unique_dois = df_dois['doi'].dropna().unique().tolist()
+
+                with requests.Session() as session:
+                    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                        futures = {
+                            executor.submit(fetch_authorship_info_and_count, doi, session): doi
+                            for doi in unique_dois
+                        }
+
+                        for future in as_completed(futures):
+                            result = future.result()
+
+                            if result["error"] is not None:
+                                failed_dois.append({
+                                    "doi": result["doi"],
+                                    "error": result["error"]
+                                })
+                                continue
+
+                            doi = result["doi"]
+                            title = result["title"]
+                            authorship_info = result["authorship_info"]
+                            author_count = result["author_count"]
+
+                            for author in authorship_info:
+                                country_codes = author.get('countries', [])
+                                source = 'article page'
+
+                                if not country_codes:
+                                    country_codes = ['']
+                                    source = 'author profile page'
+
+                                for country_code in country_codes:
+                                    author_record = {
+                                        'doi': doi,
+                                        'title': title,
+                                        'author_position': author.get('author_position', ''),
+                                        'author_name': author.get('author', {}).get('display_name', ''),
+                                        'author_id': author.get('author', {}).get('id', ''),
+                                        'Country Code 2': country_code,
+                                        'source': source,
+                                        'author_count': author_count
+                                    }
+                                    authorship_data.append(author_record)
 
                 df_authorships = pd.DataFrame(authorship_data)
                 openalex_found_dois = len(df_authorships)
