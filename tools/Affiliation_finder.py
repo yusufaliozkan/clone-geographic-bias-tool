@@ -418,7 +418,7 @@ else:
                     countries_combined = (
                         df_authorships.groupby('doi')
                         .apply(lambda x: ' | '.join(
-                            x['Country Name'].astype(str) + " (" + x['Rank'].astype(str) + ")"
+                            x['Country Name'].astype(str) + " (" + x['Rank Label'] + ")"
                         ))
                         .reset_index(name='Countries')
                     )
