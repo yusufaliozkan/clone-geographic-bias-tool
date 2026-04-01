@@ -414,7 +414,7 @@ else:
                     df_authorships['Rank Label'] = df_authorships['Rank'].apply(
                         lambda v: str(int(v)) if pd.notna(v) else 'N/A'
                     )
-
+                    df_authorships['all_authors'] = df_authorships.groupby('doi')['author_name'].transform(lambda x: ' | '.join(x))
                     countries_combined = (
                         df_authorships.groupby('doi')
                         .apply(lambda x: ' | '.join(
