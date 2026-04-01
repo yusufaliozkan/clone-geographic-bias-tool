@@ -376,6 +376,28 @@ else:
                     # Add 'api.' between 'https://' and 'openalex' in the 'author_id' column
                     df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
 
+                    def fetch_authorship_info_and_count(doi):
+                        url = f"https://api.openalex.org/works/doi:{doi}"
+                        response = requests.get(url)
+                        if response.status_code == 200:
+                            data = response.json()
+                            title = data.get('title', '')
+                            authorship_info = data.get('authorships', [])
+                            author_count = len(authorship_info)
+                            return title, authorship_info, author_count
+                        else:
+                            return '', [], 0
+
+
+                    def fetch_author_details(author_id, session=None):
+                        try:
+                            response = (session or requests).get(author_id, timeout=15)
+                            if response.status_code == 200:
+                                return response.json()
+                            return None
+                        except requests.RequestException:
+                            return None
+
                     if not exclude_author_profile_page:
                         missing_mask = df_authorships['Country Code 2'].isna() & df_authorships['author_id'].notna()
                         unique_author_ids = df_authorships.loc[missing_mask, 'author_id'].dropna().unique().tolist()
