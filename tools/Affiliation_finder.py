@@ -377,18 +377,38 @@ else:
                     df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
 
                     if not exclude_author_profile_page:
-                        # Function to update country_code if missing and mark the source
-                        def update_country_code(row):
-                            if pd.isna(row['Country Code 2']) and row['author_id']:
-                                author_details = fetch_author_details(row['author_id'])
-                                if author_details:
-                                    affiliations = author_details.get('affiliations', [])
-                                    if affiliations:
-                                        country_code = affiliations[0].get('institution', {}).get('country_code', '')
-                                        if country_code:
-                                            row['Country Code 2'] = country_code
-                                            row['source'] = 'author profile page'
-                            return row
+                        missing_mask = df_authorships['Country Code 2'].isna() & df_authorships['author_id'].notna()
+                        unique_author_ids = df_authorships.loc[missing_mask, 'author_id'].dropna().unique().tolist()
+
+                        author_country_map = {}
+
+                        with requests.Session() as session:
+                            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                                futures = {
+                                    executor.submit(fetch_author_details, author_id, session): author_id
+                                    for author_id in unique_author_ids
+                                }
+
+                                for future in as_completed(futures):
+                                    author_id = futures[future]
+                                    author_details = future.result()
+
+                                    country_code = None
+                                    if author_details:
+                                        affiliations = author_details.get('affiliations', [])
+                                        if affiliations:
+                                            country_code = affiliations[0].get('institution', {}).get('country_code')
+
+                                    author_country_map[author_id] = country_code
+
+                        df_authorships.loc[missing_mask, 'Country Code 2'] = (
+                            df_authorships.loc[missing_mask, 'author_id'].map(author_country_map)
+                        )
+
+                        df_authorships.loc[
+                            missing_mask & df_authorships['Country Code 2'].notna(),
+                            'source'
+                        ] = 'author profile page'
 
                         # Update country codes for rows where country_code is missing
                         def fetch_author_details(author_id, session=None):
