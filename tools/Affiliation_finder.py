@@ -391,7 +391,36 @@ else:
                             return row
 
                         # Update country codes for rows where country_code is missing
-                        df_authorships = df_authorships.apply(update_country_code, axis=1)
+                        def fetch_author_details(author_id, session=None):
+                            for attempt in range(4):
+                                try:
+                                    response = (session or requests).get(author_id, timeout=15)
+
+                                    if response.status_code == 200:
+                                        return response.json()
+
+                                    if response.status_code == 404:
+                                        return None
+
+                                    if response.status_code == 429:
+                                        time.sleep(2 * (attempt + 1))
+                                        continue
+
+                                    return None
+
+                                except requests.exceptions.Timeout:
+                                    if attempt < 3:
+                                        time.sleep(2 * (attempt + 1))
+                                        continue
+                                    return None
+
+                                except requests.RequestException:
+                                    if attempt < 3:
+                                        time.sleep(2 * (attempt + 1))
+                                        continue
+                                    return None
+
+                            return None
                                             
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].fillna('No country info')
                     df_authorships['Country Code 2'] = df_authorships['Country Code 2'].replace('TW', 'CN')
