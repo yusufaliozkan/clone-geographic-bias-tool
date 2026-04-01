@@ -410,7 +410,10 @@ else:
 
 
                     df_authorships['Country Name'] = df_authorships['Country Name'].fillna('No country info')
-                    df_authorships['Rank'] = df_authorships['Rank'].fillna('N/A')
+                    df_authorships['Rank'] = pd.to_numeric(df_authorships['Rank'], errors='coerce')
+                    df_authorships['Rank Label'] = df_authorships['Rank'].apply(
+                        lambda v: str(int(v)) if pd.notna(v) else 'N/A'
+                    )
 
                     countries_combined = (
                         df_authorships.groupby('doi')
