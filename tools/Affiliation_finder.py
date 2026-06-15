@@ -628,6 +628,15 @@ else:
                         'author_count':'Author count'
                     })
 
+                    csv = df_final.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="Download results as CSV",
+                        data=csv,
+                        file_name='affiliation_results.csv',
+                        mime='text/csv',
+                        icon=":material/download:"
+                    )
+
                     no_authors = df_authorships['author_name'].nunique()
                     no_doi_found = df_final['DOI'].nunique()
                     no_country = df_authorships['Country Code 3'].nunique()
