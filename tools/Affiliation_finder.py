@@ -792,6 +792,19 @@ else:
                             country_counts = country_counts.rename(columns=new_column_names)
                             country_counts = country_counts.sort_values(by='Author Count', ascending=False).reset_index(drop=True)
                             st.dataframe(country_counts, hide_index=True, use_container_width=True, height=500)
+
+                            fig_tree = px.treemap(
+                                country_counts,
+                                path=['Income Level', 'Country Name'],
+                                values='Author Count',
+                                title='Authors by Country and Income Level',
+                                color='Author Count',
+                                color_continuous_scale='Oranges',
+                                template='plotly_white'
+                            )
+                            fig_tree.update_layout(margin=dict(t=30, l=0, r=0, b=0))
+                            st.plotly_chart(fig_tree, use_container_width=True)
+                            
                     gbi_tool()
  
                     @st.experimental_fragment
