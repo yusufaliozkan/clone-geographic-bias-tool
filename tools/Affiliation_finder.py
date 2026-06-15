@@ -350,6 +350,7 @@ else:
                         progress_bar = st.progress(0, text="Fetching DOIs...")
                         completed = 0
                         total = len(batches)
+
                         for future in as_completed(futures):
                             batch = futures[future]
                             results = future.result()
@@ -379,10 +380,11 @@ else:
                                             'source': source,
                                             'author_count': author_count
                                         })
-                                        completed +=1
-                                        progress_bar.progress(completed / total, text=f"Fetching batch {completed} of {total}...")
-                        progress_bar.empty()
+                            # ✅ Increment and update ONCE per batch, after all its data is processed
+                            completed += 1
+                            progress_bar.progress(completed / total, text=f"Processed batch {completed} of {total}...")
 
+                        progress_bar.empty()
                 df_authorships = pd.DataFrame(authorship_data)
                 openalex_found_dois = len(df_authorships)
                 if openalex_found_dois == 0:
