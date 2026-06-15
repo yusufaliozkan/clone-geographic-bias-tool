@@ -141,6 +141,19 @@ with col1:
             st.switch_page("home/Home.py")
 st.divider()
 
+st.markdown("""
+    <style>
+    [data-testid="stMetricValue"] {
+        font-size: 2rem;
+        color: #E87722;
+    }
+    [data-testid="stMetricLabel"] {
+        font-size: 0.9rem;
+        color: #555;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 df_dois = None
 
 radio = st.radio('Select an option', ['Insert DOIs', 'Upload a file with DOIs'])
