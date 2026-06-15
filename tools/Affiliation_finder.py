@@ -663,7 +663,21 @@ else:
                         with col1:
                             country_counts = df_authorships['Country Name'].value_counts().reset_index()
                             country_counts.columns = ['Country Name', 'Count']
-                            fig = px.bar(country_counts, x='Country Name', y='Count', title='Country Counts')
+                            fig = px.bar(
+                                country_counts,
+                                x='Country Name',
+                                y='Count',
+                                title='Author Countries',
+                                color='Count',
+                                color_continuous_scale='Oranges',
+                                template='plotly_white'
+                            )
+                            fig.update_layout(
+                                xaxis_title='',
+                                yaxis_title='Number of Authors',
+                                coloraxis_showscale=False,
+                                title_font_size=16
+                            )
                             fig.update_xaxes(tickangle=-45)
                             col1.plotly_chart(fig, use_container_width = True)
                             country_counts = pd.merge(country_counts, df_result, on='Country Name')
