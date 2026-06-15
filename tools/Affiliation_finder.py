@@ -793,17 +793,24 @@ else:
                             country_counts = country_counts.sort_values(by='Author Count', ascending=False).reset_index(drop=True)
                             st.dataframe(country_counts, hide_index=True, use_container_width=True, height=500)
 
-                            fig_tree = px.treemap(
-                                country_counts,
-                                path=['Income Level', 'Country Name'],
-                                values='Author Count',
-                                title='Authors by Country and Income Level',
-                                color='Author Count',
-                                color_continuous_scale='Oranges',
+                            fig_h = px.bar(
+                                country_counts.sort_values('Author Count', ascending=True).tail(15),
+                                x='Author Count',
+                                y='Country Name',
+                                orientation='h',
+                                color='Income Level',
+                                color_discrete_map={
+                                    'High income': '#2E86AB',
+                                    'Upper middle income': '#E84855',
+                                    'Lower middle income': '#F4A261',
+                                    'Low income': '#2A9D8F',
+                                    'No country info': '#AAAAAA',
+                                },
+                                title='Top Countries by Author Count',
                                 template='plotly_white'
                             )
-                            fig_tree.update_layout(margin=dict(t=30, l=0, r=0, b=0))
-                            st.plotly_chart(fig_tree, use_container_width=True)
+                            fig_h.update_layout(yaxis_title='', xaxis_title='Author Count', legend_title='Income Level')
+                            st.plotly_chart(fig_h, use_container_width=True)
                             
                     gbi_tool()
  
