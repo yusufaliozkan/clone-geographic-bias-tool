@@ -313,48 +313,69 @@ else:
 
                 unique_dois = df_dois['doi'].dropna().unique().tolist()
 
+                def fetch_batch(doi_batch, session=None):
+                    filter_str = "|".join(doi_batch)
+                    url = f"https://api.openalex.org/works?filter=doi:{filter_str}&per-page=50"
+                    for attempt in range(4):
+                        try:
+                            response = (session or requests).get(url, timeout=15)
+                            if response.status_code == 200:
+                                return response.json().get('results', [])
+                            if response.status_code == 429:
+                                time.sleep(2 * (attempt + 1))
+                                continue
+                            return []
+                        except requests.exceptions.Timeout:
+                            if attempt < 3:
+                                time.sleep(2 * (attempt + 1))
+                            continue
+                        except requests.RequestException:
+                            return []
+                    return []
+
+                def chunks(lst, n):
+                    for i in range(0, len(lst), n):
+                        yield lst[i:i + n]
+
+                BATCH_SIZE = 50
+
                 with requests.Session() as session:
+                    session.headers.update({"User-Agent": "mailto:your@email.ac.uk"})
+                    batches = list(chunks(unique_dois, BATCH_SIZE))
                     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
                         futures = {
-                            executor.submit(fetch_authorship_info_and_count, doi, session): doi
-                            for doi in unique_dois
+                            executor.submit(fetch_batch, batch, session): batch
+                            for batch in batches
                         }
-
                         for future in as_completed(futures):
-                            result = future.result()
-
-                            if result["error"] is not None:
-                                failed_dois.append({
-                                    "doi": result["doi"],
-                                    "error": result["error"]
-                                })
-                                continue
-
-                            doi = result["doi"]
-                            title = result["title"]
-                            authorship_info = result["authorship_info"]
-                            author_count = result["author_count"]
-
-                            for author in authorship_info:
-                                country_codes = author.get('countries', [])
-                                source = 'article page'
-
-                                if not country_codes:
-                                    country_codes = ['']
-                                    source = 'author profile page'
-
-                                for country_code in country_codes:
-                                    author_record = {
-                                        'doi': doi,
-                                        'title': title,
-                                        'author_position': author.get('author_position', ''),
-                                        'author_name': author.get('author', {}).get('display_name', ''),
-                                        'author_id': author.get('author', {}).get('id', ''),
-                                        'Country Code 2': country_code,
-                                        'source': source,
-                                        'author_count': author_count
-                                    }
-                                    authorship_data.append(author_record)
+                            batch = futures[future]
+                            results = future.result()
+                            found_dois = {r.get('doi', '').replace('https://doi.org/', '') for r in results}
+                            for doi in batch:
+                                if doi not in found_dois:
+                                    failed_dois.append({"doi": doi, "error": "not_found_in_batch"})
+                            for data in results:
+                                doi = data.get('doi', '').replace('https://doi.org/', '')
+                                title = data.get('title', '')
+                                authorship_info = data.get('authorships', [])
+                                author_count = len(authorship_info)
+                                for author in authorship_info:
+                                    country_codes = author.get('countries', [])
+                                    source = 'article page'
+                                    if not country_codes:
+                                        country_codes = ['']
+                                        source = 'author profile page'
+                                    for country_code in country_codes:
+                                        authorship_data.append({
+                                            'doi': doi,
+                                            'title': title,
+                                            'author_position': author.get('author_position', ''),
+                                            'author_name': author.get('author', {}).get('display_name', ''),
+                                            'author_id': author.get('author', {}).get('id', ''),
+                                            'Country Code 2': country_code,
+                                            'source': source,
+                                            'author_count': author_count
+                                        })
 
                 df_authorships = pd.DataFrame(authorship_data)
                 openalex_found_dois = len(df_authorships)
@@ -376,17 +397,7 @@ else:
                     # Add 'api.' between 'https://' and 'openalex' in the 'author_id' column
                     df_authorships['author_id'] = df_authorships['author_id'].apply(lambda x: x.replace('https://', 'https://api.') if x else x)
 
-                    def fetch_authorship_info_and_count(doi):
-                        url = f"https://api.openalex.org/works/doi:{doi}"
-                        response = requests.get(url)
-                        if response.status_code == 200:
-                            data = response.json()
-                            title = data.get('title', '')
-                            authorship_info = data.get('authorships', [])
-                            author_count = len(authorship_info)
-                            return title, authorship_info, author_count
-                        else:
-                            return '', [], 0
+
 
 
                     def fetch_author_details(author_id, session=None):
