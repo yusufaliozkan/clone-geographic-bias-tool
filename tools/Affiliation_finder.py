@@ -688,7 +688,17 @@ else:
                         with col1:
                             income_level_counts = df_authorships['incomeLevel'].value_counts().reset_index()
                             income_level_counts.columns = ['Income Level', 'Count']
-                            fig2 = px.pie(income_level_counts, names='Income Level', values='Count', title='Income Level Counts')
+                            fig2 = px.pie(
+                                income_level_counts,
+                                names='Income Level',
+                                values='Count',
+                                title='Author Income Levels',
+                                hole=0.4,
+                                color_discrete_sequence=px.colors.sequential.Oranges_r,
+                                template='plotly_white'
+                            )
+                            fig2.update_traces(textposition='outside', textinfo='percent+label')
+                            fig2.update_layout(showlegend=False)
                             col2.plotly_chart(fig2, use_container_width = True)
 
                         st.subheader('Author country affiliations', anchor=False)
