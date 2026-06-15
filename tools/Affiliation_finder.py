@@ -716,7 +716,13 @@ else:
                                 values='Count',
                                 title='Author Income Levels',
                                 hole=0.4,
-                                color_discrete_sequence=px.colors.sequential.Oranges_r,
+                                color_discrete_sequence=[
+                                    '#2E86AB',  # blue - High income
+                                    '#E84855',  # red - Upper middle income
+                                    '#F4A261',  # orange - Lower middle income
+                                    '#2A9D8F',  # teal - Low income
+                                    '#AAAAAA',  # grey - No country info
+                                ],
                                 template='plotly_white'
                             )
                             fig2.update_traces(textposition='outside', textinfo='percent+label')
